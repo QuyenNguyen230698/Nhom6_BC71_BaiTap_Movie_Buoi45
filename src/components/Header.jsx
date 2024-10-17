@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Switch, Button, Modal, Checkbox, Form, Input, message } from "antd";
 import { NavLink, useNavigate } from "react-router-dom";
-import { render } from "@testing-library/react";
 import { useSelector, useDispatch } from "react-redux";
 import { http } from "../services/config";
 import { setUserAction } from "../pages/reduxMovie/userSlice";
@@ -11,14 +10,22 @@ export default function Header() {
   console.log("user :", user);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
   };
+  const showRegisterModal = () => {
+    setIsRegisterModalOpen(true);
+  };
+
   const handleOk = () => {
     setIsModalOpen(false);
+    setIsRegisterModalOpen(false);
   };
+
   const handleCancel = () => {
     setIsModalOpen(false);
+    setIsRegisterModalOpen(false);
   };
   let navigate = useNavigate();
   let dispatch = useDispatch();
@@ -48,6 +55,19 @@ export default function Header() {
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
+  };
+  const onFinishRegister = (values) => {
+    console.log("Register Success:", values);
+    http
+      .post("/api/QuanLyNguoiDung/DangKy", values)
+      .then((result) => {
+        console.log("Registration result:", result);
+        message.success("Registration Success");
+        setIsRegisterModalOpen(false);
+      })
+      .catch((err) => {
+        message.error("Registration Failed");
+      });
   };
 
   const [theme, setTheme] = useState("EN");
@@ -126,6 +146,26 @@ export default function Header() {
               <span>Login</span>
             </button>
           </div>
+          <div className=" text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 dark:text-gray-500 md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-gray-500 md:dark:hover:bg-transparent dark:border-gray-700">
+          <button 
+          onClick={showRegisterModal}
+           className="block py-2 px-3 text-xl flex">
+                  <svg
+                    className="h-8 w-8 mr-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <span>Register</span>
+                  </button>
+              </div>
         </>
       );
     }
@@ -157,24 +197,6 @@ export default function Header() {
           <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
             <div className="flex text-center">
               {renderUser()}
-              <div className=" text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 dark:text-gray-500 md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-gray-500 md:dark:hover:bg-transparent dark:border-gray-700">
-                <a href="#" className="block py-2 px-3 text-xl flex">
-                  <svg
-                    className="h-8 w-8 mr-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  <span>Register</span>
-                </a>
-              </div>
             </div>
           </div>
           <div
@@ -229,7 +251,7 @@ export default function Header() {
       </nav>
       <>
         <Modal
-          title="Basic Modal"
+          title="Login"
           open={isModalOpen}
           onOk={handleOk}
           onCancel={handleCancel}
@@ -254,7 +276,7 @@ export default function Header() {
             autoComplete="off"
           >
             <Form.Item
-              label="Username-admin1123"
+              label="Username"
               name="taiKhoan"
               rules={[
                 {
@@ -267,7 +289,7 @@ export default function Header() {
             </Form.Item>
 
             <Form.Item
-              label="Password-123321"
+              label="Password"
               name="matKhau"
               rules={[
                 {
@@ -304,6 +326,86 @@ export default function Header() {
           </Form>
         </Modal>
       </>
+      <Modal
+        title="Register"
+        open={isRegisterModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <Form
+          name="register"
+          labelCol={{
+            span: 8,
+          }}
+          wrapperCol={{
+            span: 24,
+          }}
+          layout="vertical"
+          initialValues={{ remember: true }}
+          onFinish={onFinishRegister}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+          <Form.Item
+            label="Username"
+            name="taiKhoan"
+            rules={[
+              { required: true, message: "Please input your username!" },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Password"
+            name="matKhau"
+            rules={[
+              { required: true, message: "Please input your password!" },
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item
+            label="Confirm password"
+            name="matKhau"
+            rules={[
+              { required: true, message: "Please re-enter your password!" },
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item
+            label="Full name"
+            name="name"
+            rules={[
+              { required: true, message: "Please input your full name!" },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[{ required: true, message: "Please input your email!" }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item 
+          wrapperCol={{
+            offset: 0,
+            span: 24,
+          }}
+          layout="vertical">
+            <Button block type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 }
