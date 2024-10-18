@@ -7,7 +7,6 @@ import { setUserAction } from "../pages/reduxMovie/userSlice";
 
 export default function Header() {
   let user = useSelector((state) => state.userSlice.dataLogin);
-  console.log("user :", user);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);

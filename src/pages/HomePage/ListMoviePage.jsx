@@ -9,10 +9,7 @@ export default function ListMoviePage() {
   let [listMovie, setlistMovie] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [videoUrl, setVideoUrl] = useState(""); // Lưu trữ URL video hiện tại
-  let navigate = useNavigate();
-  let handleBooking = () => {
-    navigate("/booking");
-  };
+
   useEffect(() => {
     movieService
       .getListMovie()
@@ -23,7 +20,6 @@ export default function ListMoviePage() {
   }, []);
   //#region renderListMovie
   let renderListMovie = () => {
-    console.log('listMovie :',listMovie);
     return listMovie?.slice(0, 12).map((movie, index) => {
       return (
         <div

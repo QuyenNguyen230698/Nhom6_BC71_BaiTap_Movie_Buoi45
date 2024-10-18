@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { http } from "../../services/config";
 import { Tabs } from "antd";
 import moment from "moment";
 import { movieService } from "../../services/movieService";
+import { NavLink } from "react-router-dom";
 
 const ItemMovie = ({ movie }) => {
   return (
@@ -15,8 +15,8 @@ const ItemMovie = ({ movie }) => {
             .slice(0, 4)
             .map((movieSchedule, index) => {
               return (
-                <span
-                  key={index}
+                <NavLink key={index} to={`/booking/${movieSchedule.maLichChieu}`}>
+                  <span
                   className="bg-slate-100 text-black px-5 py-2 rounded border-gray-200 border text-nowrap w-40 hover:font-medium hover:bg-gray-100 hover:w-40"
                 >
                   <span className="text-green-600">
@@ -29,6 +29,7 @@ const ItemMovie = ({ movie }) => {
                     {moment(movieSchedule.ngayChieuGioChieu).format("HH:mm")}
                   </span>
                 </span>
+                </NavLink>
               );
             })}
         </div>
@@ -51,7 +52,6 @@ export default function TabMoviePage() {
       .catch((err) => {});
   }, []);
   let renderTheater = (theaterSystem) => {
-    console.log("theaterSystem", theaterSystem);
     return theaterSystem.lstCumRap.map((theaterComplex, index) => {
       return {
         key: index,

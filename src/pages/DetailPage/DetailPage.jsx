@@ -58,7 +58,7 @@ export default function DetailPage() {
   }, [id]);
   let renderDetailMovie = () => {
     return (
-      <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-9xl dark:border-gray-700 dark:bg-gray-800 h-96">
+      <div className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-9xl border-gray-700 bg-gray-800 h-96">
         <img
           className="object-cover w-full rounded-t-lg md:w-80 md:rounded-none md:rounded-s-lg h-96"
           src={detail.hinhAnh}
@@ -135,7 +135,7 @@ export default function DetailPage() {
           items={renderSchedule()}
           onChange={onChange}
           tabPosition="left"
-          style={{ height: "400px" }}
+          style={{ height: "300px" }}
           className="overflow-hidden"
         />
       </div>
