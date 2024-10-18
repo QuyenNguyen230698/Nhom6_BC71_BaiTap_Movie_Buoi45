@@ -8,14 +8,13 @@ import moment from "moment";
 const ItemDay = ({ cinema }) => {
   return (
     <div className="flex space-x-3 p-2">
-      <div className="grid grid-cols-4 gap-4 ml-2">
+      <div className="grid grid-cols-4 gap-6 ml-2">
       {cinema.lichChieuPhim && cinema.lichChieuPhim.length > 0 ? (
   cinema.lichChieuPhim.slice(0, 4).map((movieSchedule, index) => {
     return (
       <NavLink key={index} to={`/booking/${movieSchedule.maLichChieu}`}>
-      <span
-        className="bg-slate-100 text-black px-5 py-2 rounded border-gray-200 border text-nowrap w-40 hover:font-medium hover:bg-gray-100 hover:w-40"
-      >
+      <div 
+        className="bg-slate-100 text-black px-5 py-2 rounded border-gray-200 border text-nowrap w-40 hover:font-medium hover:bg-gray-100 hover:w-40">
         <span className="text-green-600">
           {moment(movieSchedule.ngayChieuGioChieu).format("ddd,DD/MM")}
         </span>
@@ -23,7 +22,7 @@ const ItemDay = ({ cinema }) => {
         <span className="text-red-500">
           {moment(movieSchedule.ngayChieuGioChieu).format("HH:mm")}
         </span>
-      </span>
+        </div>
       </NavLink>
     );
   })

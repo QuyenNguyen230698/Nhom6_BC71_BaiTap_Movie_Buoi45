@@ -10,15 +10,14 @@ const ItemMovie = ({ movie }) => {
       <img src={movie.hinhAnh} className="w-28" alt="" />
       <div>
         <h2 className="text-lg font-semibold ml-2 mb-2">{movie.tenPhim}</h2>
-        <div className="grid grid-cols-2 gap-3 ml-2">
+        <div className="grid grid-cols-2 gap-5 ml-2">
           {movie.lstLichChieuTheoPhim
             .slice(0, 4)
             .map((movieSchedule, index) => {
               return (
                 <NavLink key={index} to={`/booking/${movieSchedule.maLichChieu}`}>
-                  <span
-                  className="bg-slate-100 text-black px-5 py-2 rounded border-gray-200 border text-nowrap w-40 hover:font-medium hover:bg-gray-100 hover:w-40"
-                >
+                  <div 
+                  className="bg-slate-100 text-black px-5 py-2 rounded border-gray-200 border text-nowrap w-40 hover:font-medium hover:bg-gray-100 hover:w-40">
                   <span className="text-green-600">
                     {moment(movieSchedule.ngayChieuGioChieu).format(
                       "ddd,DD/MM"
@@ -28,7 +27,7 @@ const ItemMovie = ({ movie }) => {
                   <span className="text-red-500">
                     {moment(movieSchedule.ngayChieuGioChieu).format("HH:mm")}
                   </span>
-                </span>
+                  </div>
                 </NavLink>
               );
             })}
