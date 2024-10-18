@@ -1,5 +1,6 @@
 import { http } from "./config"
 
+//#region API Movie
 export let movieService = {
     getListMovie: () => {
         return http.get("/api/QuanLyPhim/LayDanhSachPhim?maNhom=GP01")
@@ -17,9 +18,12 @@ export let movieService = {
         return http.get(`/api/QuanLyDatVe/LayDanhSachPhongVe?MaLichChieu=${id}`)
     }
 }
+//#endregion
 
+//#region API Admin
 export let adminService = {
     getListUser: () => {
         return http.get("/api/QuanLyNguoiDung/LayDanhSachNguoiDung?MaNhom=GP01")
     }
 }
+//#endregion

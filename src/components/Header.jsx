@@ -7,27 +7,31 @@ import { setUserAction } from "../pages/reduxMovie/userSlice";
 
 export default function Header() {
   let user = useSelector((state) => state.userSlice.dataLogin);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const showRegisterModal = () => {
-    setIsRegisterModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-    setIsRegisterModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-    setIsRegisterModalOpen(false);
-  };
   let navigate = useNavigate();
   let dispatch = useDispatch();
+
+ //#region modal show Login and register
+ const [isModalOpen, setIsModalOpen] = useState(false);
+ const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+ const showModal = () => {
+   setIsModalOpen(true);
+ };
+ const showRegisterModal = () => {
+   setIsRegisterModalOpen(true);
+ };
+
+ const handleOk = () => {
+   setIsModalOpen(false);
+   setIsRegisterModalOpen(false);
+ };
+
+ const handleCancel = () => {
+   setIsModalOpen(false);
+   setIsRegisterModalOpen(false);
+ };
+ //#endregion
+
+  //#region Load API Login and register
   const onFinish = (values) => {
     console.log("Success:", values);
     http
@@ -68,15 +72,9 @@ export default function Header() {
         message.error("Registration Failed");
       });
   };
+  //#endregion
 
-  const [theme, setTheme] = useState("EN");
-  const changeTheme = (value) => {
-    setTheme(value ? "EN" : "VN");
-  };
-  let handleLogout = () => {
-    localStorage.removeItem("DATA_USER");
-    window.location.href = "/";
-  };
+  //#region render Admin page and User page
   let renderAdminPage = () => {
     if (user.maLoaiNguoiDung === "QuanTri") {
       return (
@@ -101,7 +99,7 @@ export default function Header() {
           <div className=" text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 dark:text-gray-500 md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-gray-500 md:dark:hover:bg-transparent dark:border-gray-700">
             <button
               onClick={handleLogout}
-              className="block py-2 px-3 text-xl flex"
+              className=" py-2 px-3 text-xl flex"
             >
               <svg
                 className="h-8 w-8 mr-1"
@@ -127,7 +125,7 @@ export default function Header() {
           <div className=" text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 dark:text-gray-500 md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-gray-500 md:dark:hover:bg-transparent dark:border-gray-700">
             <button
               onClick={showModal}
-              className="block py-2 px-3 text-xl flex"
+              className=" py-2 px-3 text-xl flex"
             >
               <svg
                 className="h-8 w-8 mr-1"
@@ -148,7 +146,7 @@ export default function Header() {
           <div className=" text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 dark:text-gray-500 md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-gray-500 md:dark:hover:bg-transparent dark:border-gray-700">
           <button 
           onClick={showRegisterModal}
-           className="block py-2 px-3 text-xl flex">
+           className="py-2 px-3 text-xl flex">
                   <svg
                     className="h-8 w-8 mr-1"
                     fill="none"
@@ -168,6 +166,19 @@ export default function Header() {
         </>
       );
     }
+  };
+  //#endregion
+
+  //#region i18n changeLanguages
+  const [theme, setTheme] = useState("EN");
+  const changeTheme = (value) => {
+    setTheme(value ? "EN" : "VN");
+  };
+  //#endregion
+
+  let handleLogout = () => {
+    localStorage.removeItem("DATA_USER");
+    window.location.href = "/";
   };
 
   return (

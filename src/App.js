@@ -1,9 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
 import HomePage from './pages/HomePage/HomePage';
 import LoginPage from './pages/LoginPage/LoginPage';
-import Header from './components/Header';
 import Layout from './pages/template/Layout';
 import DetailPage from './pages/DetailPage/DetailPage';
 import BookingPage from './pages/BookingPage/BookingPage';
@@ -15,7 +13,6 @@ import 'flowbite';
 function App() {
   return (
     <BrowserRouter>
-    {/* <Header/> */}
     <Routes>
       {/* admin route */}
       <Route path='list-user' element={<Layout content={<AdminListUser/>}/>}/>

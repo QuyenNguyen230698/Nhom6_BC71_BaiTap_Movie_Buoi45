@@ -130,9 +130,9 @@ export default function CarouselPage() {
         title="Trailer Video"
         visible={isModalVisible}
         onCancel={handleCancel}
-        footer={null} // Không có nút footer
-        width="80%" // Chiều rộng 80%
-        bodyStyle={{ height: "500px" }} // Chiều cao 500px
+        footer={null}
+        width="80%"
+        bodyStyle={{ height: "500px" }}
       >
         {videoUrl && (
           <iframe

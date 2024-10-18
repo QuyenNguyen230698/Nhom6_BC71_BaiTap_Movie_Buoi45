@@ -8,6 +8,7 @@ export default function BookingPage() {
   const params = useParams();
   const { id } = params;
 
+  //#region load API book ticket and chosse chair
   useEffect(() => {
     const timer = setTimeout(() => {
       movieService
@@ -23,17 +24,19 @@ export default function BookingPage() {
 
     return () => clearTimeout(timer); // Clear timeout if component unmounts
   }, [id]);
+  //#endregion
 
-  const renderBookChair = () => {
+
+//#region render booking chair
+const renderBookChair = () => {
     console.log('chair', chair);
     return (
       <div>
-        {/* Render your chair data here */}
         <h2>{chair.tenPhim}</h2>
-        {/* Additional chair details */}
       </div>
     );
   };
+//#endregion
 
   return (
     <div className="pt-20">

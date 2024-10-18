@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { http } from "../../services/config";
-import { useNavigate } from "react-router-dom";
 import { movieService } from "../../services/movieService";
 import { NavLink } from "react-router-dom";
 import { Modal } from "antd";
 
 export default function ListMoviePage() {
   let [listMovie, setlistMovie] = useState();
+  // show modal
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [videoUrl, setVideoUrl] = useState(""); // Lưu trữ URL video hiện tại
+   // Save URL video
+  const [videoUrl, setVideoUrl] = useState("");
 
+  //#region load API list movie
   useEffect(() => {
     movieService
       .getListMovie()
@@ -18,6 +19,8 @@ export default function ListMoviePage() {
       })
       .catch((err) => {});
   }, []);
+  //#endregion
+
   //#region renderListMovie
   let renderListMovie = () => {
     return listMovie?.slice(0, 12).map((movie, index) => {
@@ -96,9 +99,9 @@ export default function ListMoviePage() {
         title="Trailer Video"
         visible={isModalVisible}
         onCancel={handleCancel}
-        footer={null} // Không có nút footer
-        width="80%" // Chiều rộng 80%
-        bodyStyle={{ height: "500px" }} // Chiều cao 500px
+        footer={null}
+        width="80%"
+        bodyStyle={{ height: "500px" }}
       >
         {videoUrl && (
           <iframe

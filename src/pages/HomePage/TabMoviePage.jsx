@@ -4,6 +4,7 @@ import moment from "moment";
 import { movieService } from "../../services/movieService";
 import { NavLink } from "react-router-dom";
 
+//#region create child theater
 const ItemMovie = ({ movie }) => {
   return (
     <div className="flex space-x-3 border-b border-gray-300 p-2">
@@ -36,12 +37,15 @@ const ItemMovie = ({ movie }) => {
     </div>
   );
 };
+//#endregion
 
 export default function TabMoviePage() {
   const onChange = (key) => {
     console.log(key);
   };
   let [renderTab, setrenderTab] = useState();
+
+  //#region load API theater
   useEffect(() => {
     movieService
       .getTheaterMovie()
@@ -50,6 +54,9 @@ export default function TabMoviePage() {
       })
       .catch((err) => {});
   }, []);
+  //#endregion
+
+  //#region render theater
   let renderTheater = (theaterSystem) => {
     return theaterSystem.lstCumRap.map((theaterComplex, index) => {
       return {
@@ -99,6 +106,8 @@ export default function TabMoviePage() {
       };
     });
   };
+  //#endregion
+
   return (
     <div className="mx-64 pt-20">
       <Tabs
