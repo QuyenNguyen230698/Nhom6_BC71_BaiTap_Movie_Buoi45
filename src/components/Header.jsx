@@ -78,11 +78,10 @@ export default function Header() {
   let renderAdminPage = () => {
     if (user.maLoaiNguoiDung === "QuanTri") {
       return (
-        <div className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white ">
+        <div className="flex font-medium p-4 md:p-0 mt-4   md:mt-0 md:bg-white ">
           <NavLink
             to="/list-user"
-            className="block py-2 px-3 mt-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 md:dark:hover:text-red-500 dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
-          >
+            className="px-3 mt-3 text-gray-900 md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
             {user.taiKhoan}
           </NavLink>
         </div>
@@ -96,7 +95,7 @@ export default function Header() {
       return (
         <>
           {renderAdminPage()}
-          <div className=" text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 dark:text-gray-500 md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-gray-500 md:dark:hover:bg-transparent dark:border-gray-700">
+          <div className=" text-gray-900 md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
             <button
               onClick={handleLogout}
               className=" py-2 px-3 text-xl flex"
@@ -122,7 +121,7 @@ export default function Header() {
     } else {
       return (
         <>
-          <div className=" text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 dark:text-gray-500 md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-gray-500 md:dark:hover:bg-transparent dark:border-gray-700">
+          <div className=" text-gray-900 md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
             <button
               onClick={showModal}
               className=" py-2 px-3 text-xl flex"
@@ -143,7 +142,7 @@ export default function Header() {
               <span>Login</span>
             </button>
           </div>
-          <div className=" text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 dark:text-gray-500 md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-gray-500 md:dark:hover:bg-transparent dark:border-gray-700">
+          <div className=" text-gray-900 md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
           <button 
           onClick={showRegisterModal}
            className="py-2 px-3 text-xl flex">
@@ -183,6 +182,7 @@ export default function Header() {
 
   return (
     <div>
+      {/* Navbar menu */}
       <nav className="fixed z-50 w-full top-0 left-0 border-gray-200 bg-white opacity-90">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <NavLink
@@ -195,7 +195,7 @@ export default function Header() {
               alt="Flowbite Logo"
             />
             <span className="self-center text-xl font-semibold whitespace-nowrap">
-              <span className="uppercase tracking-wide">Like Flix</span>
+              <span className="uppercase tracking-wide text-red-700">Like Flix</span>
               <p
                 className="text-sm tracking-tighter"
                 style={{ color: "#A6A5A3" }}
@@ -260,6 +260,7 @@ export default function Header() {
         </div>
       </nav>
       <>
+      {/* Modal show Login */}
         <Modal
           title="Login"
           open={isModalOpen}
@@ -278,8 +279,8 @@ export default function Header() {
             }}
             initialValues={{
               remember: true,
-              taiKhoan: "admin1123",
-              matKhau: "123321",
+              taiKhoan: "admin321",
+              matKhau: "123",
             }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
@@ -336,6 +337,7 @@ export default function Header() {
           </Form>
         </Modal>
       </>
+      {/* Modal show Register */}
       <Modal
         title="Register"
         open={isRegisterModalOpen}

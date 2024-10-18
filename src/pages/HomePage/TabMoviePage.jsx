@@ -43,6 +43,7 @@ export default function TabMoviePage() {
   const onChange = (key) => {
     console.log(key);
   };
+  // Create state tabMovie
   let [renderTab, setrenderTab] = useState();
 
   //#region load API theater
@@ -109,7 +110,8 @@ export default function TabMoviePage() {
   //#endregion
 
   return (
-    <div className="mx-64 pt-20">
+    <div className="mx-96 pt-20">
+      {/* Show movie schedule */}
       <Tabs
         defaultActiveKey="1"
         items={renderListTheater()}

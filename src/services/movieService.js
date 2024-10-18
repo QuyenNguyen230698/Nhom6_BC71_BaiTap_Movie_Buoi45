@@ -23,7 +23,7 @@ export let movieService = {
 //#region API Admin
 export let adminService = {
     getListUser: () => {
-        return http.get("/api/QuanLyNguoiDung/LayDanhSachNguoiDung?MaNhom=GP01")
+        return http.get("/api/QuanLyNguoiDung/LayDanhSachNguoiDung?MaNhom=GP00")
     }
 }
 //#endregion

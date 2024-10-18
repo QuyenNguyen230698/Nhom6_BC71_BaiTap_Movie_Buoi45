@@ -7,12 +7,16 @@ import DetailPage from './pages/DetailPage/DetailPage';
 import BookingPage from './pages/BookingPage/BookingPage';
 import AdminListUser from './pages/AdminListUser/AdminListUser';
 import 'flowbite';
+import Spinner from './components/Spinner';
+
 
 
 
 function App() {
   return (
-    <BrowserRouter>
+    <div>
+      <Spinner/>
+      <BrowserRouter>
     <Routes>
       {/* admin route */}
       <Route path='list-user' element={<Layout content={<AdminListUser/>}/>}/>
@@ -24,6 +28,7 @@ function App() {
       <Route path='/login' element={<Layout content={<LoginPage/>}/>}/>
     </Routes>
     </BrowserRouter>
+    </div>
   );
 }
 

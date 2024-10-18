@@ -1,6 +1,6 @@
 import React,{useEffect, useState} from 'react'
 import { adminService } from '../../services/movieService';
-import { Modal, Table, message } from 'antd';
+import { Modal, Table, Tag, message } from 'antd';
 
 
 export default function AdminListUser() {
@@ -71,6 +71,13 @@ const columns = [
       title: 'User type',
       dataIndex: 'maLoaiNguoiDung',
       key: 'userType',
+      render: (dataIndex, dataObject) => {
+        if (dataObject.maLoaiNguoiDung === "KhachHang") {
+          return <Tag color="blue">Khách hàng</Tag>;
+        } else {
+          return <Tag color="red">Quản trị</Tag>;
+        }
+      }
     },
     {
       title: 'Action',
@@ -86,7 +93,7 @@ const columns = [
 ];
 //#endregion
   return (
-    <div className='container pt-20'>
+    <div className='mx-80 pt-20'>
         <Table dataSource={listUser} columns={columns} rowKey="taiKhoan"/>
         </div>
   )

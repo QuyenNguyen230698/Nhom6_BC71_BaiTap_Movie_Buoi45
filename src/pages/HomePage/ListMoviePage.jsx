@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { Modal } from "antd";
 
 export default function ListMoviePage() {
+  // Create state listMovie
   let [listMovie, setlistMovie] = useState();
   // show modal
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -27,14 +28,14 @@ export default function ListMoviePage() {
       return (
         <div
           key={index}
-          className="max-w-sm bg-white border border-gray-200 rounded-lg shadow relative group"
+          className="w-64 bg-white border border-gray-200 rounded-lg shadow relative group"
         >
           <img
             className="rounded-lg w-64 h-80 "
             src={movie.hinhAnh}
             alt="true"
           />
-          <div className="absolute inset-0 flex flex-col items-center justify-end bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="absolute inset-0 flex flex-col items-center justify-end bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
             <button
             onClick={()=>{showModal(movie.trailer)}}
               type="button"
@@ -79,8 +80,6 @@ export default function ListMoviePage() {
   //#endregion
 
   //#region showModalTrailer
-
-
   const showModal = (url) => {
     const embedUrl = url.replace("watch?v=", "embed/") + "?autoplay=1";
     setVideoUrl(embedUrl);
@@ -88,13 +87,14 @@ export default function ListMoviePage() {
   };
   const handleCancel = () => {
     setIsModalVisible(false);
-    setVideoUrl(""); // Xóa URL để dừng video
+    setVideoUrl("");
     window.location.href = "/";
   };
   //#endregion
   return (
-    <div className="mx-60 grid grid-cols-4 gap-4 pt-4">
+    <div className="mx-96 grid grid-cols-4 gap-4 pt-4">
       {renderListMovie()}
+      {/* Modal show trailer */}
       <Modal
         title="Trailer Video"
         visible={isModalVisible}

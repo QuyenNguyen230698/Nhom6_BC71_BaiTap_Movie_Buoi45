@@ -1,4 +1,6 @@
 import axios from "axios";
+import { store } from "..";
+import { turnOffLoading, turnOnloading } from "../pages/reduxMovie/spinnerSlice";
 
 export let http = axios.create({
     baseURL: "https://movienew.cybersoft.edu.vn",
@@ -8,3 +10,18 @@ export let http = axios.create({
     },
 })
 
+http.interceptors.request.use(function (config) {
+    store.dispatch(turnOnloading())
+    return config;
+  }, function (error) {
+    store.dispatch(turnOffLoading())
+    return Promise.reject(error);
+  });
+
+// Add a response interceptor
+http.interceptors.response.use(function (response) {
+    store.dispatch(turnOffLoading())
+    return response;
+  }, function (error) {
+    return Promise.reject(error);
+  });

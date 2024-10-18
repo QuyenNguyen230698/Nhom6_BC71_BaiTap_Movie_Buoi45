@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Carousel, Modal, Button } from "antd";
-import { useDispatch } from "react-redux";
+import { Carousel, Modal } from "antd";
 
 export default function CarouselPage() {
   const contentStyle = {
@@ -12,10 +11,11 @@ export default function CarouselPage() {
     background: "gray",
   };
   //#region buttonplay
+  // Show modal
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [videoUrl, setVideoUrl] = useState(""); // Lưu trữ URL video hiện tại
-  let dispatch = useDispatch();
-
+  // Lưu trữ URL video hiện tại
+  const [videoUrl, setVideoUrl] = useState(""); 
+ 
   const showModal = (url) => {
     setVideoUrl(url); // Cập nhật URL video cho modal
     setIsModalVisible(true);

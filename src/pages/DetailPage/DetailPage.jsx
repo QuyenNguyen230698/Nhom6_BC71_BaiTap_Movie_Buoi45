@@ -148,6 +148,7 @@ let renderSchedule = () => {
     <div className=" container pt-20">
       {renderDetailMovie()}
       <div id="buyTicket" className="mt-20 pt-4 border border-gray-300">
+        {/* Show tab schedule */}
         <Tabs
           defaultActiveKey="1"
           items={renderSchedule()}
