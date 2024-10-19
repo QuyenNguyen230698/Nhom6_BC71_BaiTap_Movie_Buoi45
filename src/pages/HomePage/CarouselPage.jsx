@@ -40,7 +40,7 @@ export default function CarouselPage() {
           />
           <button
             type="button"
-            className="play-button"
+            className="absolute flex justify-center items-center inset-0 opacity-0 hover:opacity-100"
             onClick={() =>
               showModal(
                 "https://www.youtube.com/embed/HHSiOptJE8Y?si=52lHPtBUaZ8AYXJs"
@@ -48,7 +48,7 @@ export default function CarouselPage() {
             }
           >
             <svg
-              className="h-20 w-20 text-red-600"
+              className="h-20 w-20 text-red-600 hover:text-red-500"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -71,7 +71,7 @@ export default function CarouselPage() {
           />
           <button
             type="button"
-            className="play-button"
+            className="absolute flex justify-center items-center inset-0 opacity-0 hover:opacity-100"
             onClick={() =>
               showModal(
                 "https://www.youtube.com/embed/I1q-jmvPNn0?si=4JbG8iAdsRtJqDxE"
@@ -79,7 +79,7 @@ export default function CarouselPage() {
             }
           >
             <svg
-              className="h-20 w-20 text-red-600"
+              className="h-20 w-20 text-red-600 hover:text-red-500"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -102,7 +102,7 @@ export default function CarouselPage() {
           />
           <button
             type="button"
-            className="play-button"
+            className="absolute flex justify-center items-center inset-0 opacity-0 hover:opacity-100"
             onClick={() =>
               showModal(
                 "https://www.youtube.com/embed/nAktjgRzk5g?si=ylxtDmaPeXDDNHtn"
@@ -110,7 +110,7 @@ export default function CarouselPage() {
             }
           >
             <svg
-              className="h-20 w-20 text-red-600"
+              className="h-20 w-20 text-red-600 hover:text-red-500"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"

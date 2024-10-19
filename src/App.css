@@ -63,11 +63,6 @@
   width: 100%;
   height: 620px;
 }
-.play-button {
-  position: absolute;
-  top: 40%;
-  left: 48%;
-}
 
 :where(.css-dev-only-do-not-override-vryruh).ant-checkbox-wrapper:not(
     .ant-checkbox-wrapper-disabled

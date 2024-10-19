@@ -10,6 +10,7 @@ export let http = axios.create({
     },
 })
 
+//#region Interceptors Axios
 http.interceptors.request.use(function (config) {
     store.dispatch(turnOnloading())
     return config;
@@ -18,10 +19,10 @@ http.interceptors.request.use(function (config) {
     return Promise.reject(error);
   });
 
-// Add a response interceptor
 http.interceptors.response.use(function (response) {
     store.dispatch(turnOffLoading())
     return response;
   }, function (error) {
     return Promise.reject(error);
   });
+//#endregion

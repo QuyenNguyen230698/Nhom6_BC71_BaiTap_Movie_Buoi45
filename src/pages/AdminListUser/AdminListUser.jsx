@@ -8,13 +8,16 @@ export default function AdminListUser() {
   //#region load data users and admin
   let [listUser, setlistUser] = useState([])
   useEffect(() => {
+    let userData = localStorage.getItem("DATA_USER");
+    if (!userData) {
+      window.location.href = "/"
+    } else {
       adminService
       .getListUser()
       .then((result) => {
       setlistUser(result.data.content)   
-      }).catch((err) => {
-          
-      });
+      }).catch((err) => {});
+    } 
   }, []);
   //#endregion
 

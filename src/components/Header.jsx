@@ -4,32 +4,33 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { http } from "../services/config";
 import { setUserAction } from "../pages/reduxMovie/userSlice";
+import { turnOffLoading } from "../pages/reduxMovie/spinnerSlice";
 
 export default function Header() {
   let user = useSelector((state) => state.userSlice.dataLogin);
   let navigate = useNavigate();
   let dispatch = useDispatch();
 
- //#region modal show Login and register
- const [isModalOpen, setIsModalOpen] = useState(false);
- const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
- const showModal = () => {
-   setIsModalOpen(true);
- };
- const showRegisterModal = () => {
-   setIsRegisterModalOpen(true);
- };
+  //#region modal show Login and register
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const showRegisterModal = () => {
+    setIsRegisterModalOpen(true);
+  };
 
- const handleOk = () => {
-   setIsModalOpen(false);
-   setIsRegisterModalOpen(false);
- };
+  const handleOk = () => {
+    setIsModalOpen(false);
+    setIsRegisterModalOpen(false);
+  };
 
- const handleCancel = () => {
-   setIsModalOpen(false);
-   setIsRegisterModalOpen(false);
- };
- //#endregion
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    setIsRegisterModalOpen(false);
+  };
+  //#endregion
 
   //#region Load API Login and register
   const onFinish = (values) => {
@@ -37,7 +38,7 @@ export default function Header() {
     http
       .post("/api/QuanLyNguoiDung/DangNhap", values)
       .then((result) => {
-        console.log("result:", result);
+        console.log("values:", values);
         dispatch(setUserAction(result.data.content));
         let dataUser = JSON.stringify(result.data.content);
         localStorage.setItem("DATA_USER", dataUser);
@@ -49,22 +50,21 @@ export default function Header() {
           setIsModalOpen(false);
           navigate("/");
         }
-
-        message.success("Login Success");
+        dispatch(turnOffLoading());
+        message.success("Login Success ! Welcome to Like Flix");
       })
       .catch((err) => {
-        message.error("Login Failed");
+        dispatch(turnOffLoading());
+        message.error("Account or password is incorrect !");
       });
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
   const onFinishRegister = (values) => {
-    console.log("Register Success:", values);
     http
       .post("/api/QuanLyNguoiDung/DangKy", values)
       .then((result) => {
-        console.log("Registration result:", result);
         message.success("Registration Success");
         setIsRegisterModalOpen(false);
       })
@@ -81,13 +81,14 @@ export default function Header() {
         <div className="flex font-medium p-4 md:p-0 mt-4   md:mt-0 md:bg-white ">
           <NavLink
             to="/list-user"
-            className="px-3 mt-3 text-gray-900 md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
-            {user.taiKhoan}
+            className="px-3 mt-3 text-gray-900 md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700"
+          >
+            Hi,{user.taiKhoan}
           </NavLink>
         </div>
       );
     } else {
-      return <strong className="mt-3">{user.taiKhoan}</strong>;
+      return <strong className="mt-3">Hi,{user.taiKhoan}</strong>;
     }
   };
   let renderUser = () => {
@@ -96,10 +97,7 @@ export default function Header() {
         <>
           {renderAdminPage()}
           <div className=" text-gray-900 md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
-            <button
-              onClick={handleLogout}
-              className=" py-2 px-3 text-xl flex"
-            >
+            <button onClick={handleLogout} className=" py-2 px-3 text-xl flex">
               <svg
                 className="h-8 w-8 mr-1"
                 fill="none"
@@ -122,10 +120,7 @@ export default function Header() {
       return (
         <>
           <div className=" text-gray-900 md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
-            <button
-              onClick={showModal}
-              className=" py-2 px-3 text-xl flex"
-            >
+            <button onClick={showModal} className=" py-2 px-3 text-xl flex">
               <svg
                 className="h-8 w-8 mr-1"
                 fill="none"
@@ -143,25 +138,26 @@ export default function Header() {
             </button>
           </div>
           <div className=" text-gray-900 md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
-          <button 
-          onClick={showRegisterModal}
-           className="py-2 px-3 text-xl flex">
-                  <svg
-                    className="h-8 w-8 mr-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  <span>Register</span>
-                  </button>
-              </div>
+            <button
+              onClick={showRegisterModal}
+              className="py-2 px-3 text-xl flex"
+            >
+              <svg
+                className="h-8 w-8 mr-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>Register</span>
+            </button>
+          </div>
         </>
       );
     }
@@ -185,17 +181,16 @@ export default function Header() {
       {/* Navbar menu */}
       <nav className="fixed z-50 w-full top-0 left-0 border-gray-200 bg-white opacity-90">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-          <NavLink
-            to="/"
-            className="flex items-center rtl:space-x-reverse"
-          >
+          <NavLink to="/" className="flex items-center rtl:space-x-reverse">
             <img
               src="https://fellowstudio.com/wp-content/uploads/2023/08/Netflix-Logo-2006-500x333-1.png"
               className="h-12"
               alt="Flowbite Logo"
             />
             <span className="self-center text-xl font-semibold whitespace-nowrap">
-              <span className="uppercase tracking-wide text-red-700">Like Flix</span>
+              <span className="uppercase tracking-wide text-red-700">
+                Like Flix
+              </span>
               <p
                 className="text-sm tracking-tighter"
                 style={{ color: "#A6A5A3" }}
@@ -205,9 +200,7 @@ export default function Header() {
             </span>
           </NavLink>
           <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            <div className="flex text-center">
-              {renderUser()}
-            </div>
+            <div className="flex text-center">{renderUser()}</div>
           </div>
           <div
             className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
@@ -260,7 +253,7 @@ export default function Header() {
         </div>
       </nav>
       <>
-      {/* Modal show Login */}
+        {/* Modal show Login */}
         <Modal
           title="Login"
           open={isModalOpen}
@@ -359,12 +352,11 @@ export default function Header() {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
+
           <Form.Item
             label="Username"
             name="taiKhoan"
-            rules={[
-              { required: true, message: "Please input your username!" },
-            ]}
+            rules={[{ required: true, message: "Please input your username!" }]}
           >
             <Input />
           </Form.Item>
@@ -372,25 +364,14 @@ export default function Header() {
           <Form.Item
             label="Password"
             name="matKhau"
-            rules={[
-              { required: true, message: "Please input your password!" },
-            ]}
-          >
-            <Input.Password />
-          </Form.Item>
-          <Form.Item
-            label="Confirm password"
-            name="matKhau"
-            rules={[
-              { required: true, message: "Please re-enter your password!" },
-            ]}
+            rules={[{ required: true, message: "Please input your password!" }]}
           >
             <Input.Password />
           </Form.Item>
 
           <Form.Item
             label="Full name"
-            name="name"
+            name="hoTen"
             rules={[
               { required: true, message: "Please input your full name!" },
             ]}
@@ -406,12 +387,23 @@ export default function Header() {
             <Input />
           </Form.Item>
 
-          <Form.Item 
-          wrapperCol={{
-            offset: 0,
-            span: 24,
-          }}
-          layout="vertical">
+          <Form.Item
+            label="Phone number"
+            name="soDT"
+            rules={[
+              { required: true, message: "Please input your phone number!" },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            wrapperCol={{
+              offset: 0,
+              span: 24,
+            }}
+            layout="vertical"
+          >
             <Button block type="primary" htmlType="submit">
               Submit
             </Button>
