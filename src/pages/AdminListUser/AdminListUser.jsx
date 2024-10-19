@@ -1,54 +1,59 @@
 import React,{useEffect, useState} from 'react'
 import { adminService } from '../../services/movieService';
-import { Modal, Table, Tag, message } from 'antd';
+import { Table, Tag, message } from 'antd';
+import { useDispatch } from 'react-redux';
+import { turnOffLoading } from '../reduxMovie/spinnerSlice';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function AdminListUser() {
+  let dispatch = useDispatch()
+  let navigate = useNavigate()
 
   //#region load data users and admin
   let [listUser, setlistUser] = useState([])
-  useEffect(() => {
-    let userData = localStorage.getItem("DATA_USER");
-    if (!userData) {
-      window.location.href = "/"
-    } else {
-      adminService
+  let fetchListUser = () => {
+    adminService
       .getListUser()
       .then((result) => {
       setlistUser(result.data.content)   
-      }).catch((err) => {});
+      }).catch((err) => {
+        dispatch(turnOffLoading())
+      });
+  }
+  useEffect(() => {
+    let userData = localStorage.getItem("DATA_USER");
+    if (!userData) {
+      navigate("/")
+    } else {
+      fetchListUser()
     } 
   }, []);
   //#endregion
 
 //#region delete users and admin in new array
-let handleDeleteUser = (user) => {
-  console.log('listUser',listUser);
-  Modal.confirm({
-    title: 'Are you sure you want to delete this user?',
-    okText: 'Yes',
-    cancelText: 'No',
-    onOk: () => {
-      let newListUser = listUser.filter((item) => {
-        return item.taiKhoan !== user;
-      });
-      setlistUser(newListUser);
-      message.success('User deleted successfully');
-      console.log('listUser',listUser);
-    },
-    onCancel: () => {
-      message.info('User deletion canceled');
-    },
-  });
+let handleDeleteUser = async (user) => {
+  try {
+    let result = await adminService.deleteUser(user);
+    console.log("🚀 ~ handleDeleteUser ~ result:", result)
+    fetchListUser()
+    dispatch(turnOffLoading())
+    message.success("User deleted successfully");
+  } catch (error) {
+    dispatch(turnOffLoading())
+    console.log("error:", error);
+    message.error("User deleted failed");
+  }
 };
 //#endregion
  
 //#region render data user and AdminListUser
+
 const columns = [
   {
     title: 'User name',
     dataIndex: 'hoTen',
-    key: 'name',
+    key: 'hoTen',
   },
   {
     title: 'Email',
@@ -58,40 +63,44 @@ const columns = [
   {
     title: 'Phone number',
     dataIndex: 'soDT',
-    key: 'phoneNumber',
+    key: 'soDT',
   },
   {
       title: 'Account',
       dataIndex: 'taiKhoan',
-      key: 'account',
+      key: 'taiKhoan',
     },
     {
       title: 'Password',
       dataIndex: 'matKhau',
-      key: 'password',
+      key: 'matKhau',
     },
     {
       title: 'User type',
       dataIndex: 'maLoaiNguoiDung',
-      key: 'userType',
+      key: 'maLoaiNguoiDung',
       render: (dataIndex, dataObject) => {
         if (dataObject.maLoaiNguoiDung === "KhachHang") {
-          return <Tag color="blue">Khách hàng</Tag>;
+          return <Tag color="blue">Customer</Tag>;
         } else {
-          return <Tag color="red">Quản trị</Tag>;
+          return <Tag color="red">Amin</Tag>;
         }
       }
     },
     {
       title: 'Action',
       key: 'action',
-      render: (text,user) => (
-          <button
-          onClick={()=>handleDeleteUser(user.taiKhoan)}
+      render: (_, dataObject) => {
+        return (
+          <div>
+            <button
+          onClick={()=>handleDeleteUser(dataObject.taiKhoan)}
            className='bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded'>
               Delete
           </button>
-      )
+          </div>
+        )
+      }
     },
 ];
 //#endregion

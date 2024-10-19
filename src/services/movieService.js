@@ -24,6 +24,9 @@ export let movieService = {
 export let adminService = {
     getListUser: () => {
         return http.get("/api/QuanLyNguoiDung/LayDanhSachNguoiDung?MaNhom=GP00")
+    },
+    deleteUser: (user) => {
+        return http.delete(`/api/QuanLyNguoiDung/XoaNguoiDung?TaiKhoan=${user}`);
     }
 }
 //#endregion
