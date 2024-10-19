@@ -133,3 +133,19 @@
 .bg-navbar {
   background-color: #0B192C;
 }
+.bg-layout {
+  background-color: #1E3E62;
+}
+.text-color {
+  color: #FF6500
+}
+.bg-button {
+  background-color:#FF6500;
+}
+
+.hr {
+  border: none;
+    height: 1px;
+    margin: 0;
+    background-color: rgba(0, 0, 0, 0.12);
+}

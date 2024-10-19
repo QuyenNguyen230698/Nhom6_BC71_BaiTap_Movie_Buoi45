@@ -1,13 +1,11 @@
 import React from 'react';
 import Header from '../../components/Header';
-import Footer from '../../components/Footer';
 
 export default function Layout({ content }) {
   return (
-    <div>
+    <div className='bg-layout h-screen'>
       <Header />
       {content}
-      <Footer/>
     </div>
   );
 }
