@@ -78,17 +78,17 @@ export default function Header() {
   let renderAdminPage = () => {
     if (user.maLoaiNguoiDung === "QuanTri") {
       return (
-        <div className="flex font-medium p-4 md:p-0 mt-4   md:mt-0 md:bg-white ">
+        <div className="flex font-medium p-4 md:p-0 mt-4 md:mt-0 bg-navbar">
           <NavLink
             to="/list-user"
-            className="px-3 mt-3 text-gray-900 md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700"
+            className="px-3 mt-3 text-white md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700 cursor-pointer"
           >
             Hi,{user.taiKhoan}
           </NavLink>
         </div>
       );
     } else {
-      return <strong className="mt-3">Hi,{user.taiKhoan}</strong>;
+      return <strong className="mt-3 bg-navbar text-white">Hi,{user.taiKhoan}</strong>;
     }
   };
   let renderUser = () => {
@@ -96,7 +96,7 @@ export default function Header() {
       return (
         <>
           {renderAdminPage()}
-          <div className=" text-gray-900 md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
+          <div className=" bg-navbar cursor-pointer text-white md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
             <button onClick={handleLogout} className=" py-2 px-3 text-xl flex">
               <svg
                 className="h-8 w-8 mr-1"
@@ -119,7 +119,7 @@ export default function Header() {
     } else {
       return (
         <>
-          <div className=" text-gray-900 md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
+          <div className=" text-white cursor-pointer md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
             <button onClick={showModal} className=" py-2 px-3 text-xl flex">
               <svg
                 className="h-8 w-8 mr-1"
@@ -137,7 +137,7 @@ export default function Header() {
               <span>Login</span>
             </button>
           </div>
-          <div className=" text-gray-900 md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
+          <div className=" text-white cursor-pointer md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
             <button
               onClick={showRegisterModal}
               className="py-2 px-3 text-xl flex"
@@ -179,7 +179,7 @@ export default function Header() {
   return (
     <div>
       {/* Navbar menu */}
-      <nav className="fixed z-50 w-full top-0 left-0 border-gray-200 bg-white opacity-90">
+      <nav className="fixed z-50 w-full top-0 left-0 border-gray-200 bg-white opacity-90 bg-navbar">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <NavLink to="/" className="flex items-center rtl:space-x-reverse">
             <img
@@ -206,11 +206,11 @@ export default function Header() {
             className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
             id="navbar-user"
           >
-            <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white ">
+            <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 bg-navbar">
               <li>
                 <a
                   href="#"
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 md:dark:hover:text-red-500 dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
+                  className="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 md:dark:hover:text-red-500 dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
                   aria-current="page"
                 >
                   Movie Schedule
@@ -219,7 +219,7 @@ export default function Header() {
               <li>
                 <a
                   href="#"
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 md:dark:hover:text-red-500 dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
+                  className="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 md:dark:hover:text-red-500 dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   Theater Complex
                 </a>
@@ -227,7 +227,7 @@ export default function Header() {
               <li>
                 <a
                   href="#"
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 md:dark:hover:text-red-500 dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
+                  className="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 md:dark:hover:text-red-500 dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   News
                 </a>
@@ -235,7 +235,7 @@ export default function Header() {
               <li>
                 <a
                   href="#"
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 md:dark:hover:text-red-500 dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
+                  className="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 md:dark:hover:text-red-500 dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   Application
                 </a>
