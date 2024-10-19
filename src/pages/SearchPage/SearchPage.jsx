@@ -127,7 +127,7 @@ let bookingTicket = () => {
   };
 
   return (
-    <div className="mx-96 pt-10">
+    <div id="listMovie" className="mx-96 pt-10">
       <div className="grid grid-cols-4 gap-4 pt-4">
         {/* Select Movie */}
         <form className="w-64 mx-auto">

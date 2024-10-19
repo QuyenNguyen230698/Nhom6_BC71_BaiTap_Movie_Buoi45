@@ -142,7 +142,10 @@
 .bg-button {
   background-color:#FF6500;
 }
-
+.container-theater {
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+}
 .hr {
   border: none;
     height: 1px;

@@ -10,7 +10,7 @@ const ItemMovie = ({ movie }) => {
     <div className="flex space-x-3 border-b border-gray-300 p-2">
       <img src={movie.hinhAnh} className="w-28" alt="" />
       <div>
-        <h2 className="text-lg font-semibold ml-2 mb-2">{movie.tenPhim}</h2>
+      <h2 className="m-2 text-lg text-red-500 font-semibold">   {movie.tenPhim}</h2>
         <div className="grid grid-cols-2 gap-5 ml-2">
           {movie.lstLichChieuTheoPhim
             .slice(0, 4)
@@ -64,7 +64,7 @@ export default function TabMoviePage() {
         key: index,
         label: (
           <div className="text-left w-80 text-lg border-b border-gray-300">
-            <h4 className="truncate text-green-600 uppercase">
+            <h4 className="truncate text-green-500 uppercase">
               {theaterComplex.tenCumRap}
             </h4>
             <p className="truncate text-sm text-gray-400">
@@ -110,7 +110,7 @@ export default function TabMoviePage() {
   //#endregion
 
   return (
-    <div className="mx-96 pt-20">
+    <div id="tabMovie" className="mx-96 pt-20 mb-10">
       {/* Show movie schedule */}
       <Tabs
         defaultActiveKey="1"

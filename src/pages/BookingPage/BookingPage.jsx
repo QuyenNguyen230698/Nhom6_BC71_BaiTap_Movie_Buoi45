@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { movieService } from '../../services/movieService';
+import { message } from 'antd';
 
 export default function BookingPage() {
     const [selectedSeats, setSelectedSeats] = useState([]);
@@ -33,16 +34,37 @@ export default function BookingPage() {
       (total, seat) => total + seat.giaVe,
       0
     );
+
+    const handleBookTicket = () => {
+        const user = JSON.parse(localStorage.getItem("DATA_USER"));
+        const bookingInfo = {
+            taiKhoanNguoiDung:user?.taiKhoan,
+            maLichChieu:movieInfo.maLichChieu,
+            danhSachVe:selectedSeats.map((ghe) => ({
+                maGhe: ghe.maGhe,
+                tenGhe: ghe.tenGhe,
+                maRap: ghe.maRap,
+                loaiGhe: ghe.loaiGhe,
+                stt: ghe.stt,
+                giaVe: ghe.giaVe,
+                daDat: ghe.daDat,
+                taiKhoanNguoiDat: ghe.taiKhoanNguoiDat, 
+            }))
+        };
+        message.success("Booking successful");
+        console.log('Booking Information:', bookingInfo)
+      };
   
     return (
-      <div className="pt-20 ">
+      <div className="pt-20 bg-layout h-screen">
         <div className="flex justify-between p-5 h-96">
+            
           <div className="w-2/3 p-2">
             <div className="bg-gray-800 py-2 rounded text-white text-center">
               Screen
             </div>
             <div className='mt-4'>
-              <div className="grid grid-cols-10 gap-3 mx-48">
+              <div className="container-theater gap-3 mx-48">
                 {listChair.map((ghe) => (
                   <button
                     className="p-1 cursor-pointer border rounded"
@@ -73,7 +95,7 @@ export default function BookingPage() {
               <div className="flex justify-center gap-4 my-8 text-white">
                 <div className="text-center ">
                   <button
-                    className="p-1 w-14 h-8 rounded"
+                    className="p-1 w-10 h-8 rounded"
                     style={{ backgroundColor: "#0B192C" }}
                     disabled
                   ></button>
@@ -81,7 +103,7 @@ export default function BookingPage() {
                 </div>
                 <div className="text-center">
                   <button
-                    className="p-1 w-14 h-8 rounded"
+                    className="p-1 w-10 h-8 rounded"
                     style={{ backgroundColor: "#FFD700" }}
                     disabled
                   ></button>
@@ -89,7 +111,7 @@ export default function BookingPage() {
                 </div>
                 <div className="text-center">
                   <button
-                    className="p-1 w-14 h-8 rounded"
+                    className="p-1 w-10 h-8 rounded"
                     style={{ backgroundColor: "#ddd" }}
                     disabled
                   ></button>
@@ -138,7 +160,9 @@ export default function BookingPage() {
             <h3 className='text-color font-medium'>{selectedSeats.map((ghe) => ghe.tenGhe).join(", ")}</h3>
             </div>
             <hr className='hr'/>
-            <button className="w-full py-6 text-2xl bg-orange-500 hover:bg-orange-600 text-white mt-5 cursor-pointer">
+            <button 
+            onClick={handleBookTicket}
+            className="w-full py-6 text-2xl bg-red-600 hover:bg-red-700 text-white mt-5 cursor-pointer">
             Book tickets
             </button>
           </div>

@@ -88,7 +88,11 @@ export default function Header() {
         </div>
       );
     } else {
-      return <strong className="mt-3 bg-navbar text-white">Hi,{user.taiKhoan}</strong>;
+      return (
+        <strong className="mt-3 bg-navbar text-white">
+          Hi,{user.taiKhoan}
+        </strong>
+      );
     }
   };
   let renderUser = () => {
@@ -209,19 +213,19 @@ export default function Header() {
             <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 bg-navbar">
               <li>
                 <a
-                  href="#"
+                  href="#listMovie"
                   className="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 md:dark:hover:text-red-500 dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
                   aria-current="page"
                 >
-                  Movie Schedule
+                  Showtimes
                 </a>
               </li>
               <li>
                 <a
-                  href="#"
+                  href="#tabMovie"
                   className="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 md:dark:hover:text-red-500 dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
                 >
-                  Theater Complex
+                  Theaters
                 </a>
               </li>
               <li>
@@ -237,7 +241,7 @@ export default function Header() {
                   href="#"
                   className="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 md:dark:hover:text-red-500 dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
                 >
-                  Application
+                  About us
                 </a>
               </li>
               <li>
@@ -352,7 +356,6 @@ export default function Header() {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-
           <Form.Item
             label="Username"
             name="taiKhoan"

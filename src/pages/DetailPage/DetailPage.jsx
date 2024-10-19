@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams,NavLink } from "react-router-dom";
-import { Progress, Tabs } from "antd";
+import { Progress, Tabs, message } from "antd";
 import { movieService } from "../../services/movieService";
 import moment from "moment";
 
 //#region creative item to render day and time bookticket
 const ItemDay = ({ cinema }) => {
   return (
-    <div className="flex space-x-3 p-2">
+    <div className="flex space-x-3 p-2 mt-2">
       <div className="grid grid-cols-4 gap-6 ml-2">
       {cinema.lichChieuPhim && cinema.lichChieuPhim.length > 0 ? (
   cinema.lichChieuPhim.slice(0, 4).map((movieSchedule, index) => {
@@ -44,6 +44,9 @@ export default function DetailPage() {
   let handleGoBack = () => {
     navigate("/");
   };
+  let messageTicket = () => {
+    message.success("Please select the date and time");
+  }
 //#region load API detail and Schedule
 useEffect(() => {
   movieService
@@ -66,13 +69,14 @@ let renderDetailMovie = () => {
         alt="true"
       />
       <div className="flex flex-col justify-between p-4 leading-normal">
-        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-200 dark:text-white">
+        <h5 className="mb-2 text-4xl text-start font-bold tracking-tight text-gray-200 dark:text-white">
           {detail.tenPhim}
         </h5>
         <p className="mb-3 font-normal text-gray-400 dark:text-gray-100">
           {detail.moTa}
         </p>
         <button
+        onClick={messageTicket}
           type="button"
           className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
         >
@@ -145,9 +149,9 @@ let renderSchedule = () => {
   };
 
   return (
-    <div className=" container pt-20">
+    <div className=" container pt-20 bg-layout h-screen">
       {renderDetailMovie()}
-      <div id="buyTicket" className="mt-20 pt-4 border border-gray-300">
+      <div id="buyTicket" className="mt-20 border border-gray-300">
         {/* Show tab schedule */}
         <Tabs
           defaultActiveKey="1"

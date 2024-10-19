@@ -16,6 +16,9 @@ export let movieService = {
     },
     getBookTicket: (id) => {
         return http.get(`/api/QuanLyDatVe/LayDanhSachPhongVe?MaLichChieu=${id}`)
+    },
+    bookTicket: (data) => {
+        return http.post("/api/QuanLyDatVe/DatVe", data)
     }
 }
 //#endregion
