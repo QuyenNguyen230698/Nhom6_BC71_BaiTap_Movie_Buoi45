@@ -105,6 +105,7 @@ export default function Header() {
     http
       .post("/api/QuanLyNguoiDung/DangKy", values)
       .then((result) => {
+        console.log("result:", result);
         message.success(t("Registration Success"));
         setIsRegisterModalOpen(false);
       })

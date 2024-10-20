@@ -109,10 +109,10 @@ const columns = [
         return (
           <div>
             <button
-          onClick={()=>handleDeleteUser(dataObject.taiKhoan)}
-           className='bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded'>
+              onClick={() => handleDeleteUser(dataObject.taiKhoan)}
+              className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out'>
               {t("Delete")}
-          </button>
+            </button>
           </div>
         )
       }
@@ -120,7 +120,8 @@ const columns = [
 ];
 //#endregion
   return (
-    <div data-aos="fade-up" data-aos-delay="500" className='container mx-auto px-4 pt-20'>
+    <div data-aos="fade-up" data-aos-delay="500" className='container mx-auto px-4 py-8'>
+      <h1 className="text-2xl font-bold mb-6">{t("User Management")}</h1>
       <div className='bg-white rounded-lg shadow-md overflow-hidden'>
         <Table 
           className='w-full' 
