@@ -120,8 +120,20 @@ const columns = [
 ];
 //#endregion
   return (
-    <div data-aos="fade-up" data-aos-delay="500" className='mx-64 pt-20 bg-layout rounded h-screen'>
-        <Table className='bg-white px-4 rounded' dataSource={listUser} columns={columns} rowKey="taiKhoan"/>
-        </div>
+    <div data-aos="fade-up" data-aos-delay="500" className='container mx-auto px-4 pt-20'>
+      <div className='bg-white rounded-lg shadow-md overflow-hidden'>
+        <Table 
+          className='w-full' 
+          dataSource={listUser} 
+          columns={columns} 
+          rowKey="taiKhoan"
+          pagination={{ 
+            pageSize: 10, 
+            position: ['bottomCenter'],
+            className: 'py-4'
+          }}
+        />
+      </div>
+    </div>
   )
 }

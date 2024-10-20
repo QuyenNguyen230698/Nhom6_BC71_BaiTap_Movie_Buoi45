@@ -85,10 +85,10 @@ export default function Header() {
 
         if (result.data.content.maLoaiNguoiDung == "QuanTri") {
           setIsModalOpen(false);
-          navigate("/list-user");
+          window.location.href = "/list-user";
         } else {
           setIsModalOpen(false);
-          navigate("/user");
+          window.location.href = "/user";
         }
         dispatch(turnOffLoading());
         message.success(t("Login Success ! Welcome to Like Flix"));
