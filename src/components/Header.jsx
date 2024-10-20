@@ -202,7 +202,7 @@ export default function Header() {
   return (
     <div>
       {/* Navbar menu */}
-      <nav className="fixed z-50 w-full top-0 left-0 border-gray-200 bg-white opacity-90 bg-navbar">
+      <nav className="fixed z-50 w-full top-0 left-0 border-gray-200 opacity-90 bg-navbar">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <NavLink to="/" data-aos="fade-right" data-aos-delay="1500" className="flex items-center rtl:space-x-reverse">
             <img
