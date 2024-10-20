@@ -28,8 +28,27 @@ export default function Header() {
 
   // i18n change language
   const { t, i18n } = useTranslation();
+  const [theme, setTheme] = useState(() => {
+    // Initialize theme from localStorage or default to "EN"
+    return localStorage.getItem("language") === "vn" ? "VN" : "EN";
+  });
+
+  useEffect(() => {
+    // Set initial language when component mounts
+    const savedLanguage = localStorage.getItem("language") || "en";
+    i18n.changeLanguage(savedLanguage);
+    setTheme(savedLanguage === "en" ? "EN" : "VN");
+  }, [i18n]);
+
   const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng); // Thay đổi ngôn ngữ
+    i18n.changeLanguage(lng);
+    localStorage.setItem("language", lng); // Save language choice to localStorage
+  };
+
+  const changeTheme = (value) => {
+    const newTheme = value ? "EN" : "VN";
+    setTheme(newTheme);
+    changeLanguage(value ? "en" : "vn");
   };
 
   //#region modal show Login and register
@@ -214,13 +233,6 @@ export default function Header() {
   };
   //#endregion
 
-  //#region i18n changeLanguages
-  const [theme, setTheme] = useState("EN");
-  const changeTheme = (value) => {
-    setTheme(value ? "EN" : "VN");
-  };
-  //#endregion
-
   let handleLogout = () => {
     localStorage.removeItem("DATA_USER");
     window.location.href = "/";
@@ -299,8 +311,6 @@ export default function Header() {
                 <Switch
                   checked={theme === "EN"}
                   onChange={(checked) => {
-                    const newLang = checked ? "en" : "vn";
-                    changeLanguage(newLang);
                     changeTheme(checked);
                   }}
                   checkedChildren="EN"
