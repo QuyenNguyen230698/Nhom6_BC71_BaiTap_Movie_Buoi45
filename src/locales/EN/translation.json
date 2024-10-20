@@ -57,5 +57,7 @@
     "Login Success ! Welcome to Like Flix": "Login Success ! Welcome to Like Flix",
     "Account or password is incorrect !": "Account or password is incorrect !",
     "Go back": "Go back",
-    "Rate": "Rate"
+    "Rate": "Rate",
+    "Registration Success": "Registration Success",
+    "Registration Failed Please Check Your Information": "Registration Failed Please Check Your Information"
 }

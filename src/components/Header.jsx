@@ -105,11 +105,12 @@ export default function Header() {
     http
       .post("/api/QuanLyNguoiDung/DangKy", values)
       .then((result) => {
-        message.success("Registration Success");
+        message.success(t("Registration Success"));
         setIsRegisterModalOpen(false);
       })
       .catch((err) => {
-        message.error("Registration Failed");
+        dispatch(turnOffLoading());
+        message.error(t("Registration Failed Please Check Your Information"));
       });
   };
   //#endregion
