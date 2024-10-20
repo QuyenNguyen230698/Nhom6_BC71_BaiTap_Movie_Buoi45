@@ -17,6 +17,7 @@ export default function UserPage() {
       });
       AOS.refresh();
     }, []);
+    // get user info API
   useEffect(() => {
     let dataUser = JSON.parse(localStorage.getItem("DATA_USER"));
     if (dataUser) {
@@ -29,6 +30,7 @@ export default function UserPage() {
       })
       .catch((err) => {});
   }, []);
+  //#region User Info
   let renderUser = () => {
     let foundUser = userInfo.find((item) => item.taiKhoan == user);
     return foundUser ? (
@@ -123,6 +125,7 @@ export default function UserPage() {
               disabled
             />
           </div>
+          <div></div>
           <button className="bg-button p-2 rounded text-white hover:bg-orange-600">
             Update
           </button>
@@ -132,8 +135,11 @@ export default function UserPage() {
       <p>Không tìm thấy người dùng.</p>
     );
   };
+  //#endregion
+  
   return (
     <div data-aos="fade-up" data-aos-delay="500" className="bg-layout h-screen pt-20">
+      {/* User Info */}
       {renderUser()}
       {/* Ticket Info */}
       <div data-aos="fade-up" data-aos-delay="800" className="w-2/4 p-4 bg-white rounded mt-10 mx-auto">

@@ -77,7 +77,7 @@ export default function BookingPage() {
               Screen
             </div>
             <div className='mt-4'>
-              <div className="container-theater gap-3 mx-48">
+              <div className="container-theater gap-3 container">
                 {listChair.map((ghe) => (
                   <button
                     className="p-1 cursor-pointer border rounded"

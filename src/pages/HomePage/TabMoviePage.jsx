@@ -77,7 +77,7 @@ export default function TabMoviePage() {
       return {
         key: index,
         label: (
-          <div className="text-left w-80 text-lg border-b border-gray-300">
+          <div className="text-left w-56 text-lg border-b border-gray-300">
             <h4 className="truncate text-green-500 uppercase">
               {theaterComplex.tenCumRap}
             </h4>
@@ -124,7 +124,7 @@ export default function TabMoviePage() {
   //#endregion
 
   return (
-    <div data-aos="fade-up" data-aos-delay="1200" id="tabMovie" className="mx-96 pt-20 mb-10">
+    <div data-aos="fade-up" data-aos-delay="1200" id="tabMovie" className="container-tabMovie pt-20 pb-10">
       {/* Show movie schedule */}
       <Tabs
         defaultActiveKey="1"
@@ -132,7 +132,7 @@ export default function TabMoviePage() {
         onChange={onChange}
         tabPosition="left"
         style={{ height: "600px" }}
-        className="border border-gray-300 overflow-hidden"
+        className="border bg-white border-gray-300 overflow-hidden"
       />
     </div>
   );

@@ -60,7 +60,7 @@ let bookingTicket = () => {
   if (!selectedMovieId || !selectedScheduleId || !selectedMovieDay) {
     return (
       <button
-        className="bg-gray-400 w-60 text-white px-4 py-2 rounded-lg cursor-not-allowed"
+        className="bg-gray-400 w-60 text-white px-8 py-3 rounded-lg cursor-not-allowed"
         disabled
       >
         Buy Ticket Now
@@ -69,7 +69,8 @@ let bookingTicket = () => {
   }
   return (
     <NavLink to={`/booking/${selectedScheduleId}`}>
-      <button className="bg-red-600 w-60 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+      <button className="bg-red-600 w-60 hover:bg-red-700 text-white px-8
+       py-3 rounded-lg">
         Buy Ticket Now
       </button>
     </NavLink>
@@ -141,13 +142,13 @@ let bookingTicket = () => {
   };
 
   return (
-    <div data-aos="fade-up" data-aos-delay="500" id="listMovie" className="mx-96 pt-10">
+    <div data-aos="fade-up" data-aos-delay="500" id="listMovie" className="container-listMovie pt-10">
       <div className="grid grid-cols-4 gap-4 pt-4">
         {/* Select Movie */}
-        <form className="w-64 mx-auto">
+        <form className="w-full">
           <select
             onChange={handleMovieChange}
-            className="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5"
+            className="bg-button text-center text-white border border-gray-300 text-base rounded-lg focus:ring-gray-700 focus:border-gray-700 hover:bg-gray-700 block w-full p-2.5"
           >
             <option selected>Choose a movie</option>
             {renderSearchMovie()}
@@ -155,11 +156,11 @@ let bookingTicket = () => {
         </form>
 
         {/* Select show schedule */}
-        <form className="w-64 mx-auto">
+        <form className="w-full">
           <select
             id="schedule"
             onChange={handleScheduleChange}
-            className="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5"
+            className="bg-button text-center text-white border border-gray-300 text-base rounded-lg focus:ring-gray-700 focus:border-gray-700 hover:bg-gray-700 block w-full p-2.5"
           >
             <option selected>Choose a schedule</option>
             {renderSearchSchedule()}
@@ -167,11 +168,11 @@ let bookingTicket = () => {
         </form>
 
         {/* Select date */}
-        <form className="w-64 mx-auto">
+        <form className="w-full">
           <select
             id="movie-day"
             onChange={handleMovieDayChange}
-            className="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5"
+            className="bg-button text-center text-white border border-gray-300 text-base rounded-lg focus:ring-gray-700 focus:border-gray-700 hover:bg-gray-700 block w-full p-2.5"
           >
             <option selected>Movie day</option>
             {renderMovieDay()}
@@ -179,7 +180,9 @@ let bookingTicket = () => {
         </form>
 
         {/* Buy ticket button */}
-        {bookingTicket()}
+        <div className="w-full">
+          {bookingTicket()}
+        </div>
       </div>
     </div>
   );

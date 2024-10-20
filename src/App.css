@@ -2,6 +2,14 @@
   width: 80%;
   margin: 0 auto;
 }
+.container-listMovie {
+  width: 70%;
+  margin: 0 auto;
+}
+.container-tabMovie {
+  width: 60%;
+  margin: 0 auto;
+}
 :where(
     .css-dev-only-do-not-override-vryruh
   ).ant-switch.ant-switch-checked:hover:not(.ant-switch-disabled) {
@@ -140,7 +148,7 @@
   color: #FF6500
 }
 .bg-button {
-  background-color:#FF6500;
+  background-color:#ef4444;
 }
 .container-theater {
   display: grid;

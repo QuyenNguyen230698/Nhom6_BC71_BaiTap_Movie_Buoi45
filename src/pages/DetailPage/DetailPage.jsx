@@ -172,7 +172,7 @@ let renderSchedule = () => {
           onChange={onChange}
           tabPosition="left"
           style={{ height: "300px" }}
-          className="overflow-hidden"
+          className="overflow-hidden bg-white"
         />
       </div>
     </div>

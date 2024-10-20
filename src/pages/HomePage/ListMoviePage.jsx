@@ -45,7 +45,7 @@ export default function ListMoviePage() {
           className="w-64 bg-white border border-gray-200 rounded-lg shadow relative group"
         >
           <img
-            className="rounded-lg w-64 h-80 "
+            className="rounded-lg w-full h-80 "
             src={movie.hinhAnh}
             alt="true"
           />
@@ -53,7 +53,7 @@ export default function ListMoviePage() {
             <button
             onClick={()=>{showModal(movie.trailer)}}
               type="button"
-              className="absolute w-64 h-80 justify-center items-center flex z-20"
+              className="absolute w-full h-80 justify-center items-center flex z-20"
             >
               <svg
                 className="h-20 w-20 text-red-600"
@@ -106,7 +106,7 @@ export default function ListMoviePage() {
   };
   //#endregion
   return (
-    <div data-aos="fade-up" data-aos-delay="800" className="mx-96 grid grid-cols-4 gap-4 pt-4">
+    <div data-aos="fade-up" data-aos-delay="800" className="container-listMovie grid grid-cols-4 gap-6 pt-4">
       {renderListMovie()}
       {/* Modal show trailer */}
       <Modal

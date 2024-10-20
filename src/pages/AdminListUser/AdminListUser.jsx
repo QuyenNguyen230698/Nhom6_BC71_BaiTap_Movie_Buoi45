@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-
 export default function AdminListUser() {
   let dispatch = useDispatch()
   let navigate = useNavigate()
@@ -119,8 +118,8 @@ const columns = [
 ];
 //#endregion
   return (
-    <div data-aos="fade-up" data-aos-delay="500" className='mx-80 pt-20'>
-        <Table dataSource={listUser} columns={columns} rowKey="taiKhoan"/>
+    <div data-aos="fade-up" data-aos-delay="500" className='mx-64 pt-20 bg-layout rounded'>
+        <Table className='bg-white px-4 rounded' dataSource={listUser} columns={columns} rowKey="taiKhoan"/>
         </div>
   )
 }
