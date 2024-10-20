@@ -1,12 +1,13 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from "react";
 import { Switch, Button, Modal, Checkbox, Form, Input, message } from "antd";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { http } from "../services/config";
 import { setUserAction } from "../pages/reduxMovie/userSlice";
 import { turnOffLoading } from "../pages/reduxMovie/spinnerSlice";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useTranslation } from "react-i18next";
 
 export default function Header() {
   let user = useSelector((state) => state.userSlice.dataLogin);
@@ -19,11 +20,17 @@ export default function Header() {
       offset: 1000,
       delay: 0,
       duration: 1000,
-      easing: 'ease',
+      easing: "ease",
       once: true,
     });
     AOS.refresh();
   }, []);
+
+  // i18n change language
+  const { t, i18n } = useTranslation();
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng); // Thay đổi ngôn ngữ
+  };
 
   //#region modal show Login and register
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -65,11 +72,11 @@ export default function Header() {
           navigate("/user");
         }
         dispatch(turnOffLoading());
-        message.success("Login Success ! Welcome to Like Flix");
+        message.success(t("Login Success ! Welcome to Like Flix"));
       })
       .catch((err) => {
         dispatch(turnOffLoading());
-        message.error("Account or password is incorrect !");
+        message.error(t("Account or password is incorrect !"));
       });
   };
   const onFinishFailed = (errorInfo) => {
@@ -92,23 +99,31 @@ export default function Header() {
   let renderAdminPage = () => {
     if (user.maLoaiNguoiDung === "QuanTri") {
       return (
-        <div data-aos="fade-left" data-aos-delay="1000" className="flex font-medium p-4 md:p-0 mt-4 md:mt-0 bg-navbar">
+        <div
+          data-aos="fade-left"
+          data-aos-delay="1000"
+          className="flex font-medium p-4 md:p-0 mt-4 md:mt-0 bg-navbar"
+        >
           <NavLink
             to="/list-user"
             className="px-3 mt-3 text-white md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700 cursor-pointer"
           >
-            Hi,{user.taiKhoan}
+            {t("Hi")},{user.taiKhoan}
           </NavLink>
         </div>
       );
     } else {
       return (
-        <div data-aos="fade-left" data-aos-delay="1000" className="flex font-medium p-4 md:p-0 mt-4 md:mt-0 bg-navbar">
+        <div
+          data-aos="fade-left"
+          data-aos-delay="1000"
+          className="flex font-medium p-4 md:p-0 mt-4 md:mt-0 bg-navbar"
+        >
           <NavLink
             to="/user"
             className="px-3 mt-3 text-white md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700 cursor-pointer"
           >
-            Hi,{user.taiKhoan}
+            {t("Hi")},{user.taiKhoan}
           </NavLink>
         </div>
       );
@@ -119,7 +134,11 @@ export default function Header() {
       return (
         <>
           {renderAdminPage()}
-          <div data-aos="fade-left" data-aos-delay="1500" className=" bg-navbar cursor-pointer text-white md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
+          <div
+            data-aos="fade-left"
+            data-aos-delay="1500"
+            className=" bg-navbar cursor-pointer text-white md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700"
+          >
             <button onClick={handleLogout} className=" py-2 px-3 text-xl flex">
               <svg
                 className="h-8 w-8 mr-1"
@@ -134,7 +153,7 @@ export default function Header() {
                   d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <span>Logout</span>
+              <span>{t("Logout")}</span>
             </button>
           </div>
         </>
@@ -142,7 +161,11 @@ export default function Header() {
     } else {
       return (
         <>
-          <div data-aos="fade-left" data-aos-delay="1000" className=" text-white cursor-pointer md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
+          <div
+            data-aos="fade-left"
+            data-aos-delay="1000"
+            className=" text-white cursor-pointer md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700"
+          >
             <button onClick={showModal} className=" py-2 px-3 text-xl flex">
               <svg
                 className="h-8 w-8 mr-1"
@@ -157,10 +180,14 @@ export default function Header() {
                   d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <span>Login</span>
+              <span>{t("Login")}</span>
             </button>
           </div>
-          <div data-aos="fade-left" data-aos-delay="1500" className=" text-white cursor-pointer md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
+          <div
+            data-aos="fade-left"
+            data-aos-delay="1500"
+            className=" text-white cursor-pointer md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700"
+          >
             <button
               onClick={showRegisterModal}
               className="py-2 px-3 text-xl flex"
@@ -178,7 +205,7 @@ export default function Header() {
                   d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <span>Register</span>
+              <span>{t("Register")}</span>
             </button>
           </div>
         </>
@@ -204,7 +231,12 @@ export default function Header() {
       {/* Navbar menu */}
       <nav className="fixed z-50 w-full top-0 left-0 border-gray-200 opacity-90 bg-navbar">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-          <NavLink to="/" data-aos="fade-right" data-aos-delay="1500" className="flex items-center rtl:space-x-reverse">
+          <NavLink
+            to="/"
+            data-aos="fade-right"
+            data-aos-delay="1500"
+            className="flex items-center rtl:space-x-reverse"
+          >
             <img
               src="https://fellowstudio.com/wp-content/uploads/2023/08/Netflix-Logo-2006-500x333-1.png"
               className="h-12"
@@ -236,7 +268,7 @@ export default function Header() {
                   className="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 md:dark:hover:text-red-500 dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
                   aria-current="page"
                 >
-                  Showtimes
+                  {t("Showtimes")}
                 </a>
               </li>
               <li data-aos="fade-right" data-aos-delay="500">
@@ -244,29 +276,33 @@ export default function Header() {
                   href="#tabMovie"
                   className="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 md:dark:hover:text-red-500 dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
                 >
-                  Theaters
+                  {t("Theaters")}
                 </a>
               </li>
               <li data-aos="fade-right" data-aos-delay="300">
                 <a
-                  href="#"
+                  href="#carousel"
                   className="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 md:dark:hover:text-red-500 dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
                 >
-                  News
+                  {t("News")}
                 </a>
               </li>
               <li data-aos="fade-left" data-aos-delay="300">
                 <a
-                  href="#"
+                  href="#footer"
                   className="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 md:dark:hover:text-red-500 dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
                 >
-                  About us
+                  {t("About us")}
                 </a>
               </li>
               <li data-aos="fade-left" data-aos-delay="500">
                 <Switch
                   checked={theme === "EN"}
-                  onChange={changeTheme}
+                  onChange={(checked) => {
+                    const newLang = checked ? "en" : "vn";
+                    changeLanguage(newLang);
+                    changeTheme(checked);
+                  }}
                   checkedChildren="EN"
                   unCheckedChildren="VN"
                 />
@@ -278,7 +314,7 @@ export default function Header() {
       <>
         {/* Modal show Login */}
         <Modal
-          title="Login"
+          title={t("Login")}
           open={isModalOpen}
           onOk={handleOk}
           onCancel={handleCancel}
@@ -303,7 +339,7 @@ export default function Header() {
             autoComplete="off"
           >
             <Form.Item
-              label="Username"
+              label={t("Account")}
               name="taiKhoan"
               rules={[
                 {
@@ -316,7 +352,7 @@ export default function Header() {
             </Form.Item>
 
             <Form.Item
-              label="Password"
+              label={t("Password")}
               name="matKhau"
               rules={[
                 {
@@ -329,14 +365,14 @@ export default function Header() {
             </Form.Item>
 
             <Form.Item
-              name="remember"
+              name={t("remember")}
               valuePropName="checked"
               wrapperCol={{
                 offset: 0,
                 span: 24,
               }}
             >
-              <Checkbox>Remember me</Checkbox>
+              <Checkbox>{t("remember")}</Checkbox>
             </Form.Item>
 
             <Form.Item
@@ -347,7 +383,7 @@ export default function Header() {
               layout="vertical"
             >
               <Button block type="primary" htmlType="submit">
-                Submit
+                {t("Login")}
               </Button>
             </Form.Item>
           </Form>
@@ -355,7 +391,7 @@ export default function Header() {
       </>
       {/* Modal show Register */}
       <Modal
-        title="Register"
+        title={t("Register")}
         open={isRegisterModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -376,7 +412,7 @@ export default function Header() {
           autoComplete="off"
         >
           <Form.Item
-            label="Username"
+            label={t("Account")}
             name="taiKhoan"
             rules={[{ required: true, message: "Please input your username!" }]}
           >
@@ -384,7 +420,7 @@ export default function Header() {
           </Form.Item>
 
           <Form.Item
-            label="Password"
+            label={t("Password")}
             name="matKhau"
             rules={[{ required: true, message: "Please input your password!" }]}
           >
@@ -392,7 +428,7 @@ export default function Header() {
           </Form.Item>
 
           <Form.Item
-            label="Full name"
+            label={t("Full name")}
             name="hoTen"
             rules={[
               { required: true, message: "Please input your full name!" },
@@ -402,7 +438,7 @@ export default function Header() {
           </Form.Item>
 
           <Form.Item
-            label="Email"
+            label={t("Email")}
             name="email"
             rules={[{ required: true, message: "Please input your email!" }]}
           >
@@ -410,7 +446,7 @@ export default function Header() {
           </Form.Item>
 
           <Form.Item
-            label="Phone number"
+            label={t("Phone number")}
             name="soDT"
             rules={[
               { required: true, message: "Please input your phone number!" },
@@ -427,7 +463,7 @@ export default function Header() {
             layout="vertical"
           >
             <Button block type="primary" htmlType="submit">
-              Submit
+              {t("Register")}
             </Button>
           </Form.Item>
         </Form>

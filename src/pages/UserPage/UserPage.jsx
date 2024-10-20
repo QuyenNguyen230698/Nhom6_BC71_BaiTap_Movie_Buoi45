@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { adminService } from "../../services/movieService";
 import AOS from 'aos';
+import {useTranslation} from 'react-i18next';
 import 'aos/dist/aos.css';
 
 export default function UserPage() {
+  const { t, i18n } = useTranslation();
   let [user, setuser] = useState({});
   const [userInfo, setUserInfo] = useState([]);
     // AOS animation
@@ -44,7 +46,7 @@ export default function UserPage() {
               htmlFor="small-input"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Account
+              {t("Account")}
             </label>
             <input
               value={foundUser.taiKhoan}
@@ -59,7 +61,7 @@ export default function UserPage() {
               htmlFor="small-input"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Password
+              {t("Password")}
             </label>
             <input
               value={foundUser.matKhau}
@@ -73,7 +75,7 @@ export default function UserPage() {
               htmlFor="small-input"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Name
+              {t("Name")}
             </label>
             <input
               value={foundUser.hoTen}
@@ -101,7 +103,7 @@ export default function UserPage() {
               htmlFor="small-input"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Phone Number
+              {t("Phone Number")}
             </label>
             <input
               value={foundUser.soDT}
@@ -115,7 +117,7 @@ export default function UserPage() {
               htmlFor="small-input"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Type user
+              {t("Type user")}
             </label>
             <input
               value={foundUser.maLoaiNguoiDung}
@@ -127,12 +129,12 @@ export default function UserPage() {
           </div>
           <div></div>
           <button className="bg-button p-2 rounded text-white hover:bg-orange-600">
-            Update
+            {t("Update")}
           </button>
         </form>
       </div>
     ) : (
-      <p>Không tìm thấy người dùng.</p>
+      <p>{t("User not found.")}</p>
     );
   };
   //#endregion
@@ -144,31 +146,31 @@ export default function UserPage() {
       {/* Ticket Info */}
       <div data-aos="fade-up" data-aos-delay="800" className="w-2/4 p-4 bg-white rounded mt-10 mx-auto">
         <h2 className="text-center px-4 pb-4 text-3xl text-color">
-          Booking history
+          {t("Booking history")}
         </h2>
         <hr className="hr" />
         <div className="grid grid-cols-2">
           <div className="py-2">
-            <p>Booking date: </p>
-            <p className="text-color ">Movie name: </p>
+            <p>{t("Booking date")}: </p>
+            <p className="text-color ">{t("Movie name")}: </p>
             <p className="text-nowrap">
-              <span>Duration: 120 minutes</span>,<span>Ticket price: </span>
+              <span>{t("Duration")}: 120 {t("minutes")}</span>,<span>{t("Ticket price")}: </span>
             </p>
-            <p className="text-green-500">Theater: </p>
+            <p className="text-green-500">{t("Theater")}: </p>
             <p className="text-nowrap mb-2">
-              <span>Schedule: </span>,<span>Chair: </span>
+              <span>{t("Schedule")}: </span>,<span>{t("Chair")}: </span>
             </p>
             <hr className="hr" />
           </div>
           <div className="py-2">
-            <p>Booking date: </p>
-            <p className="text-color ">Movie name: </p>
+            <p>{t("Booking date")}: </p>
+            <p className="text-color ">{t("Movie name")}: </p>
             <p className="text-nowrap">
-              <span>Duration: 120 minutes</span>,<span>Ticket price: </span>
+              <span>{t("Duration")}: 120 {t("minutes")}</span>,<span>{t("Ticket price")}: </span>
             </p>
-            <p className="text-green-500">Theater: </p>
+            <p className="text-green-500">{t("Theaters")}: </p>
             <p className="text-nowrap mb-2">
-              <span>Schedule: </span>,<span>Chair: </span>
+              <span>{t("Schedule")}: </span>,<span>{t("Chair")}: </span>
             </p>
             <hr className="hr" />
           </div>

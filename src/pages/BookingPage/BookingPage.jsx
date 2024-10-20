@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { movieService } from '../../services/movieService';
 import { message } from 'antd';
 import AOS from 'aos';
+import {useTranslation} from 'react-i18next';
 import 'aos/dist/aos.css';
 
 export default function BookingPage() {
@@ -10,6 +11,7 @@ export default function BookingPage() {
     const [listChair, setlistChair] = useState([]);
     const [movieInfo, setMovieInfo] = useState({});
     let { id } = useParams();
+    const { t, i18n } = useTranslation();
 // AOS animation
     useEffect(() => {
       AOS.init({
@@ -64,7 +66,7 @@ export default function BookingPage() {
                 taiKhoanNguoiDat: ghe.taiKhoanNguoiDat, 
             }))
         };
-        message.success("Booking successful");
+        message.success(t("Booking successful"));
         console.log('Booking Information:', bookingInfo)
       };
   
@@ -74,7 +76,7 @@ export default function BookingPage() {
             
           <div className="w-2/3 p-2">
             <div className="bg-gray-800 py-2 rounded text-white text-center">
-              Screen
+              {t("Screen")}
             </div>
             <div className='mt-4'>
               <div className="container-theater gap-3 container">
@@ -112,7 +114,7 @@ export default function BookingPage() {
                     style={{ backgroundColor: "#0B192C" }}
                     disabled
                   ></button>
-                  <p>Placed</p>
+                  <p>{t("Placed")}</p>
                 </div>
                 <div className="text-center">
                   <button
@@ -128,7 +130,7 @@ export default function BookingPage() {
                     style={{ backgroundColor: "#ddd" }}
                     disabled
                   ></button>
-                  <p>Normal</p>
+                  <p>{t("Normal")}</p>
                 </div>
               </div>
             </div>
@@ -141,22 +143,22 @@ export default function BookingPage() {
             </h2>
             <hr className='hr'/>
             <div className='flex justify-between py-6 px-4'>
-                <h3 className='font-medium'>Theater Cluster:</h3>
+                <h3 className='font-medium'>{t("Theater Cluster")}:</h3>
                 <h3 className='text-color font-medium'>{movieInfo.tenCumRap}</h3>
             </div>
             <hr className='hr'/>
             <div className='flex justify-between py-6 px-4'>
-                <h3 className='font-medium'>Address:</h3>
+                <h3 className='font-medium'>{t("Address")}:</h3>
                 <h3 className='text-color font-medium'>{movieInfo.diaChi}</h3>
             </div>
             <hr className='hr'/>
             <div className='flex justify-between py-6 px-4'>
-                <h3 className='font-medium'>Theater:</h3>
+                <h3 className='font-medium'>{t("Theater")}:</h3>
                 <h3 className='text-color font-medium'>{movieInfo.tenRap}</h3>
             </div>
             <hr className='hr'/>
             <div className='flex justify-between py-6 px-4'>
-                <h3 className='font-medium'>Movie show date and time:</h3>
+                <h3 className='font-medium'>{t("Movie show date and time")}:</h3>
                 <h3 className='text-color font-medium'>
                 {movieInfo.ngayChieu} - 
                 <span className='text-green-500'> {movieInfo.gioChieu}</span>
@@ -164,19 +166,19 @@ export default function BookingPage() {
             </div>
             <hr className='hr'/>
             <div className='flex justify-between py-6 px-4'>
-                <h3 className='font-medium'>Movie Name:</h3>
+                <h3 className='font-medium'>{t("Movie Name")}:</h3>
                 <h3 className='text-color font-medium'>{movieInfo.tenPhim}</h3>
             </div>
             <hr className='hr'/>
             <div className='flex justify-between py-6 px-4'>
-            <h3 className='font-medium text-nowrap'>Number of seats selected:  </h3>
+            <h3 className='font-medium text-nowrap'>{t("Number of seats selected")}:  </h3>
             <h3 className='text-color font-medium'>{selectedSeats.map((ghe) => ghe.tenGhe).join(", ")}</h3>
             </div>
             <hr className='hr'/>
             <button 
             onClick={handleBookTicket}
             className="w-full py-6 text-2xl bg-red-600 hover:bg-red-700 text-white mt-5 cursor-pointer">
-            Book tickets
+            {t("Book tickets")}
             </button>
           </div>
         </div>

@@ -8,6 +8,7 @@ import AdminListUser from './pages/AdminListUser/AdminListUser';
 import 'flowbite';
 import Spinner from './components/Spinner';
 import UserPage from './pages/UserPage/UserPage';
+import './i18n';
 
 function App() {
   return (

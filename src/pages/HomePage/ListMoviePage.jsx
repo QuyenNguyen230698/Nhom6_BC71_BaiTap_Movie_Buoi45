@@ -3,9 +3,11 @@ import { movieService } from "../../services/movieService";
 import { NavLink } from "react-router-dom";
 import { Modal } from "antd";
 import AOS from 'aos';
+import {useTranslation} from 'react-i18next';
 import 'aos/dist/aos.css';
 
 export default function ListMoviePage() {
+  const { t, i18n } = useTranslation();
   // Create state listMovie
   let [listMovie, setlistMovie] = useState();
   // show modal
@@ -77,13 +79,13 @@ export default function ListMoviePage() {
                 type="button"
                 className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
               >
-                <NavLink to={`/detail/${movie.maPhim}`}>Buy ticket</NavLink>
+                <NavLink to={`/detail/${movie.maPhim}`}>{t("Buy ticket")}</NavLink>
               </button>
               <button
                 type="button"
                 className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
               >
-                <NavLink to={`/detail/${movie.maPhim}`}>Detail</NavLink>
+                <NavLink to={`/detail/${movie.maPhim}`}>{t("Detail")}</NavLink>
               </button>
             </div>
           </div>

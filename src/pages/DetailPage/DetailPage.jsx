@@ -4,6 +4,7 @@ import { Progress, Tabs, message } from "antd";
 import { movieService } from "../../services/movieService";
 import moment from "moment";
 import AOS from 'aos';
+import {useTranslation} from 'react-i18next';
 import 'aos/dist/aos.css';
 
 //#region creative item to render day and time bookticket
@@ -40,6 +41,7 @@ const ItemDay = ({ cinema }) => {
 export default function DetailPage() {
   let [detail, setdetail] = useState({});
   let [schedules, setSchedules] = useState([]);
+  const { t, i18n } = useTranslation();
   let params = useParams();
   let { id } = params;
   let navigate = useNavigate();
@@ -47,7 +49,7 @@ export default function DetailPage() {
     navigate("/");
   };
   let messageTicket = () => {
-    message.success("Please select the date and time");
+    message.success(t("Please select the date and time"));
   }
   // AOS animation
   useEffect(() => {
@@ -93,14 +95,14 @@ let renderDetailMovie = () => {
           type="button"
           className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
         >
-          <a href="#buyTicket" className="duration-1000">Buy ticket</a>
+          <a href="#buyTicket" className="duration-1000">{t("Buy ticket")}</a>
         </button>
         <button
           onClick={handleGoBack}
           type="button"
           className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
         >
-          Go back
+          {t("Go back")}
         </button>
       </div>
       <div>
@@ -111,7 +113,7 @@ let renderDetailMovie = () => {
           size={120}
           format={() => (
             <span className="text-base font-medium text-green-600">
-              {detail.danhGia}/10 Rate
+              {detail.danhGia}/10 {t("Rate")}
             </span>
           )}
         />
@@ -127,11 +129,11 @@ let renderSchedule = () => {
     return [
       {
         key: "no-schedule",
-        label: 'No schedules available',
+        label: t("No schedules available"),
         children: [
           <div className="text-center text-2xl font-bold">
             <span>
-            There is no movie showing date yet
+            {t("There is no movie showing date yet")}
             </span>
           </div>
         ],

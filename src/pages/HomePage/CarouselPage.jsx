@@ -23,26 +23,24 @@ export default function CarouselPage() {
     textAlign: "center",
     background: "gray",
   };
-  //#region buttonplay
-  // Show modal
+  //#region buttonplay Show modal
   const [isModalVisible, setIsModalVisible] = useState(false);
-  // Lưu trữ URL video hiện tại
   const [videoUrl, setVideoUrl] = useState(""); 
  
   const showModal = (url) => {
-    setVideoUrl(url); // Cập nhật URL video cho modal
+    setVideoUrl(url); 
     setIsModalVisible(true);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
-    setVideoUrl(""); // Xóa URL để dừng video
+    setVideoUrl(""); 
     window.location.href = "/";
   };
   //#endregion
 
   return (
-    <div data-aos="fade-up" data-aos-delay="200" className="pt-20">
+    <div id="carousel" data-aos="fade-up" data-aos-delay="200" className="pt-20">
       <Carousel autoplay arrows dotPosition="bottom">
         {/* Slide 1 */}
         <div className="pos" style={contentStyle}>
@@ -138,7 +136,7 @@ export default function CarouselPage() {
         </div>
       </Carousel>
 
-      {/* Modal chung cho tất cả slides */}
+      {/* Modal all slides */}
       <Modal
         title="Trailer Video"
         visible={isModalVisible}

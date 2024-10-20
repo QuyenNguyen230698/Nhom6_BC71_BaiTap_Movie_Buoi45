@@ -5,11 +5,13 @@ import { useDispatch } from 'react-redux';
 import { turnOffLoading } from '../reduxMovie/spinnerSlice';
 import { useNavigate } from 'react-router-dom';
 import AOS from 'aos';
+import {useTranslation} from 'react-i18next';
 import 'aos/dist/aos.css';
 
 export default function AdminListUser() {
   let dispatch = useDispatch()
   let navigate = useNavigate()
+  const { t, i18n } = useTranslation();
 
   // AOS animation
   useEffect(() => {
@@ -51,11 +53,11 @@ let handleDeleteUser = async (user) => {
     console.log("🚀 ~ handleDeleteUser ~ result:", result)
     fetchListUser()
     dispatch(turnOffLoading())
-    message.success("User deleted successfully");
+    message.success(t("User deleted successfully"));
   } catch (error) {
     dispatch(turnOffLoading())
     console.log("error:", error);
-    message.error("User deleted failed");
+    message.error(t("User deleted failed"));
   }
 };
 //#endregion
@@ -64,44 +66,44 @@ let handleDeleteUser = async (user) => {
 
 const columns = [
   {
-    title: 'User name',
+    title: t("Full name"),
     dataIndex: 'hoTen',
     key: 'hoTen',
   },
   {
-    title: 'Email',
+    title: t("Email"),
     dataIndex: 'email',
     key: 'email',
   },
   {
-    title: 'Phone number',
+    title: t("Phone number"),
     dataIndex: 'soDT',
     key: 'soDT',
   },
   {
-      title: 'Account',
+      title: t("Account"),
       dataIndex: 'taiKhoan',
       key: 'taiKhoan',
     },
     {
-      title: 'Password',
+      title: t("Password"),
       dataIndex: 'matKhau',
       key: 'matKhau',
     },
     {
-      title: 'User type',
+      title: t("User type"),
       dataIndex: 'maLoaiNguoiDung',
       key: 'maLoaiNguoiDung',
       render: (dataIndex, dataObject) => {
         if (dataObject.maLoaiNguoiDung === "KhachHang") {
-          return <Tag color="blue">Customer</Tag>;
+          return <Tag color="blue">{t("Customer")}</Tag>;
         } else {
-          return <Tag color="red">Amin</Tag>;
+          return <Tag color="red">{t("Admin")}</Tag>;
         }
       }
     },
     {
-      title: 'Action',
+      title: t("Action"),
       key: 'action',
       render: (_, dataObject) => {
         return (
@@ -109,7 +111,7 @@ const columns = [
             <button
           onClick={()=>handleDeleteUser(dataObject.taiKhoan)}
            className='bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded'>
-              Delete
+              {t("Delete")}
           </button>
           </div>
         )
@@ -118,7 +120,7 @@ const columns = [
 ];
 //#endregion
   return (
-    <div data-aos="fade-up" data-aos-delay="500" className='mx-64 pt-20 bg-layout rounded'>
+    <div data-aos="fade-up" data-aos-delay="500" className='mx-64 pt-20 bg-layout rounded h-screen'>
         <Table className='bg-white px-4 rounded' dataSource={listUser} columns={columns} rowKey="taiKhoan"/>
         </div>
   )

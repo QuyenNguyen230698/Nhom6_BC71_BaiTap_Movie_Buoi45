@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Footer() {
   return (
-<footer className="z-50 w-full border-t border-gray-200 bg-gray-900 text-white">
+<footer id='footer' className="z-50 w-full border-t border-gray-200 bg-gray-900 text-white">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-2">
         <hr className="my-6 border-gray-700 sm:mx-auto lg:my-8" />
         <div className="sm:flex sm:items-center sm:justify-between">
