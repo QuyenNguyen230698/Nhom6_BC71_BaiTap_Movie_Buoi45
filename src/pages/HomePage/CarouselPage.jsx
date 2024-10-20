@@ -1,7 +1,20 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Carousel, Modal } from "antd";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 export default function CarouselPage() {
+  // AOS animation
+  useEffect(() => {
+    AOS.init({
+      offset: 400,
+      delay: 0,
+      duration: 1000,
+      easing: 'ease',
+      once: true,
+    });
+    AOS.refresh();
+  }, []);
   const contentStyle = {
     margin: 0,
     height: "620px",
@@ -29,7 +42,7 @@ export default function CarouselPage() {
   //#endregion
 
   return (
-    <div className="pt-20">
+    <div data-aos="fade-up" data-aos-delay="200" className="pt-20">
       <Carousel autoplay arrows dotPosition="bottom">
         {/* Slide 1 */}
         <div className="pos" style={contentStyle}>

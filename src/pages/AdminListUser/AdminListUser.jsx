@@ -4,11 +4,25 @@ import { Table, Tag, message } from 'antd';
 import { useDispatch } from 'react-redux';
 import { turnOffLoading } from '../reduxMovie/spinnerSlice';
 import { useNavigate } from 'react-router-dom';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 
 export default function AdminListUser() {
   let dispatch = useDispatch()
   let navigate = useNavigate()
+
+  // AOS animation
+  useEffect(() => {
+    AOS.init({
+      offset: 400,
+      delay: 500,
+      duration: 1000,
+      easing: 'ease',
+      once: true,
+    });
+    AOS.refresh();
+  }, []);
 
   //#region load data users and admin
   let [listUser, setlistUser] = useState([])
@@ -27,7 +41,7 @@ export default function AdminListUser() {
       navigate("/")
     } else {
       fetchListUser()
-    } 
+    };
   }, []);
   //#endregion
 
@@ -105,7 +119,7 @@ const columns = [
 ];
 //#endregion
   return (
-    <div className='mx-80 pt-20'>
+    <div data-aos="fade-up" data-aos-delay="500" className='mx-80 pt-20'>
         <Table dataSource={listUser} columns={columns} rowKey="taiKhoan"/>
         </div>
   )

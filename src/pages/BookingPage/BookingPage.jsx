@@ -2,12 +2,25 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { movieService } from '../../services/movieService';
 import { message } from 'antd';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 export default function BookingPage() {
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [listChair, setlistChair] = useState([]);
     const [movieInfo, setMovieInfo] = useState({});
     let { id } = useParams();
+// AOS animation
+    useEffect(() => {
+      AOS.init({
+        offset: 400,
+        delay: 500,
+        duration: 1000,
+        easing: 'ease',
+        once: true,
+      });
+      AOS.refresh();
+    }, []);
   
     useEffect(() => {
       // Fetching seat data from the API
@@ -56,7 +69,7 @@ export default function BookingPage() {
       };
   
     return (
-      <div className="pt-20 bg-layout h-screen">
+      <div data-aos="fade-up" data-aos-delay="500" className="pt-20 bg-layout h-screen">
         <div className="flex justify-between p-5 h-96">
             
           <div className="w-2/3 p-2">

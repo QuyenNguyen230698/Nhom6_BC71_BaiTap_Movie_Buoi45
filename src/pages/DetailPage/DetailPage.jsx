@@ -3,6 +3,8 @@ import { useNavigate, useParams,NavLink } from "react-router-dom";
 import { Progress, Tabs, message } from "antd";
 import { movieService } from "../../services/movieService";
 import moment from "moment";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 //#region creative item to render day and time bookticket
 const ItemDay = ({ cinema }) => {
@@ -47,6 +49,17 @@ export default function DetailPage() {
   let messageTicket = () => {
     message.success("Please select the date and time");
   }
+  // AOS animation
+  useEffect(() => {
+    AOS.init({
+      offset: 400,
+      delay: 0,
+      duration: 1000,
+      easing: 'ease',
+      once: true,
+    });
+    AOS.refresh();
+  }, []);
 //#region load API detail and Schedule
 useEffect(() => {
   movieService
@@ -149,9 +162,9 @@ let renderSchedule = () => {
   };
 
   return (
-    <div className=" container pt-20 bg-layout h-screen">
+    <div data-aos="fade-up" data-aos-delay="300" className=" container pt-20 bg-layout h-screen">
       {renderDetailMovie()}
-      <div id="buyTicket" className="mt-20 border border-gray-300">
+      <div data-aos="fade-up" data-aos-delay="500" id="buyTicket" className="mt-20 border border-gray-300">
         {/* Show tab schedule */}
         <Tabs
           defaultActiveKey="1"

@@ -1,9 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { adminService } from "../../services/movieService";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 export default function UserPage() {
   let [user, setuser] = useState({});
   const [userInfo, setUserInfo] = useState([]);
+    // AOS animation
+    useEffect(() => {
+      AOS.init({
+        offset: 400,
+        delay: 500,
+        duration: 1000,
+        easing: 'ease',
+        once: true,
+      });
+      AOS.refresh();
+    }, []);
   useEffect(() => {
     let dataUser = JSON.parse(localStorage.getItem("DATA_USER"));
     if (dataUser) {
@@ -120,10 +133,10 @@ export default function UserPage() {
     );
   };
   return (
-    <div className="bg-layout h-screen pt-20">
+    <div data-aos="fade-up" data-aos-delay="500" className="bg-layout h-screen pt-20">
       {renderUser()}
       {/* Ticket Info */}
-      <div className="w-2/4 p-4 bg-white rounded mt-10 mx-auto">
+      <div data-aos="fade-up" data-aos-delay="800" className="w-2/4 p-4 bg-white rounded mt-10 mx-auto">
         <h2 className="text-center px-4 pb-4 text-3xl text-color">
           Booking history
         </h2>

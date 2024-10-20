@@ -1,15 +1,29 @@
-import React, { useState } from "react";
+import {useState, useEffect} from 'react';
 import { Switch, Button, Modal, Checkbox, Form, Input, message } from "antd";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { http } from "../services/config";
 import { setUserAction } from "../pages/reduxMovie/userSlice";
 import { turnOffLoading } from "../pages/reduxMovie/spinnerSlice";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 export default function Header() {
   let user = useSelector((state) => state.userSlice.dataLogin);
   let navigate = useNavigate();
   let dispatch = useDispatch();
+
+  // AOS animation
+  useEffect(() => {
+    AOS.init({
+      offset: 1000,
+      delay: 0,
+      duration: 1000,
+      easing: 'ease',
+      once: true,
+    });
+    AOS.refresh();
+  }, []);
 
   //#region modal show Login and register
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -78,7 +92,7 @@ export default function Header() {
   let renderAdminPage = () => {
     if (user.maLoaiNguoiDung === "QuanTri") {
       return (
-        <div className="flex font-medium p-4 md:p-0 mt-4 md:mt-0 bg-navbar">
+        <div data-aos="fade-left" data-aos-delay="1000" className="flex font-medium p-4 md:p-0 mt-4 md:mt-0 bg-navbar">
           <NavLink
             to="/list-user"
             className="px-3 mt-3 text-white md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700 cursor-pointer"
@@ -89,7 +103,7 @@ export default function Header() {
       );
     } else {
       return (
-        <div className="flex font-medium p-4 md:p-0 mt-4 md:mt-0 bg-navbar">
+        <div data-aos="fade-left" data-aos-delay="1000" className="flex font-medium p-4 md:p-0 mt-4 md:mt-0 bg-navbar">
           <NavLink
             to="/user"
             className="px-3 mt-3 text-white md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700 cursor-pointer"
@@ -105,7 +119,7 @@ export default function Header() {
       return (
         <>
           {renderAdminPage()}
-          <div className=" bg-navbar cursor-pointer text-white md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
+          <div data-aos="fade-left" data-aos-delay="1500" className=" bg-navbar cursor-pointer text-white md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
             <button onClick={handleLogout} className=" py-2 px-3 text-xl flex">
               <svg
                 className="h-8 w-8 mr-1"
@@ -128,7 +142,7 @@ export default function Header() {
     } else {
       return (
         <>
-          <div className=" text-white cursor-pointer md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
+          <div data-aos="fade-left" data-aos-delay="1000" className=" text-white cursor-pointer md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
             <button onClick={showModal} className=" py-2 px-3 text-xl flex">
               <svg
                 className="h-8 w-8 mr-1"
@@ -146,7 +160,7 @@ export default function Header() {
               <span>Login</span>
             </button>
           </div>
-          <div className=" text-white cursor-pointer md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
+          <div data-aos="fade-left" data-aos-delay="1500" className=" text-white cursor-pointer md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700">
             <button
               onClick={showRegisterModal}
               className="py-2 px-3 text-xl flex"
@@ -190,7 +204,7 @@ export default function Header() {
       {/* Navbar menu */}
       <nav className="fixed z-50 w-full top-0 left-0 border-gray-200 bg-white opacity-90 bg-navbar">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-          <NavLink to="/" className="flex items-center rtl:space-x-reverse">
+          <NavLink to="/" data-aos="fade-right" data-aos-delay="1500" className="flex items-center rtl:space-x-reverse">
             <img
               src="https://fellowstudio.com/wp-content/uploads/2023/08/Netflix-Logo-2006-500x333-1.png"
               className="h-12"
@@ -216,7 +230,7 @@ export default function Header() {
             id="navbar-user"
           >
             <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 bg-navbar">
-              <li>
+              <li data-aos="fade-right" data-aos-delay="1000">
                 <a
                   href="#listMovie"
                   className="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 md:dark:hover:text-red-500 dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
@@ -225,7 +239,7 @@ export default function Header() {
                   Showtimes
                 </a>
               </li>
-              <li>
+              <li data-aos="fade-right" data-aos-delay="500">
                 <a
                   href="#tabMovie"
                   className="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 md:dark:hover:text-red-500 dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
@@ -233,7 +247,7 @@ export default function Header() {
                   Theaters
                 </a>
               </li>
-              <li>
+              <li data-aos="fade-right" data-aos-delay="300">
                 <a
                   href="#"
                   className="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 md:dark:hover:text-red-500 dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
@@ -241,7 +255,7 @@ export default function Header() {
                   News
                 </a>
               </li>
-              <li>
+              <li data-aos="fade-left" data-aos-delay="300">
                 <a
                   href="#"
                   className="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 md:dark:hover:text-red-500 dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
@@ -249,7 +263,7 @@ export default function Header() {
                   About us
                 </a>
               </li>
-              <li>
+              <li data-aos="fade-left" data-aos-delay="500">
                 <Switch
                   checked={theme === "EN"}
                   onChange={changeTheme}
@@ -281,8 +295,8 @@ export default function Header() {
             }}
             initialValues={{
               remember: true,
-              taiKhoan: "admin321",
-              matKhau: "123",
+              taiKhoan: "adNguyen",
+              matKhau: "123456",
             }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}

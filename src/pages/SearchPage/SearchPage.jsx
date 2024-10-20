@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { movieService } from "../../services/movieService";
 import { NavLink } from "react-router-dom";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 export default function SearchPage() {
   // Create state save listMovie
@@ -12,6 +14,18 @@ export default function SearchPage() {
   let [selectedScheduleId, setSelectedScheduleId] = useState(null); 
   // Save day 
   let [selectedMovieDay, setSelectedMovieDay] = useState(null); 
+
+  // AOS animation
+  useEffect(() => {
+    AOS.init({
+      offset: 400,
+      delay: 0,
+      duration: 1000,
+      easing: 'ease',
+      once: true,
+    });
+    AOS.refresh();
+  }, []);
 
 //#region Call API
   // Get list movie
@@ -127,7 +141,7 @@ let bookingTicket = () => {
   };
 
   return (
-    <div id="listMovie" className="mx-96 pt-10">
+    <div data-aos="fade-up" data-aos-delay="500" id="listMovie" className="mx-96 pt-10">
       <div className="grid grid-cols-4 gap-4 pt-4">
         {/* Select Movie */}
         <form className="w-64 mx-auto">

@@ -3,6 +3,8 @@ import { Tabs } from "antd";
 import moment from "moment";
 import { movieService } from "../../services/movieService";
 import { NavLink } from "react-router-dom";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 //#region create child theater
 const ItemMovie = ({ movie }) => {
@@ -45,6 +47,18 @@ export default function TabMoviePage() {
   };
   // Create state tabMovie
   let [renderTab, setrenderTab] = useState();
+
+  // AOS animation
+  useEffect(() => {
+    AOS.init({
+      offset: 400,
+      delay: 0,
+      duration: 1000,
+      easing: 'ease',
+      once: true,
+    });
+    AOS.refresh();
+  }, []);
 
   //#region load API theater
   useEffect(() => {
@@ -110,7 +124,7 @@ export default function TabMoviePage() {
   //#endregion
 
   return (
-    <div id="tabMovie" className="mx-96 pt-20 mb-10">
+    <div data-aos="fade-up" data-aos-delay="1200" id="tabMovie" className="mx-96 pt-20 mb-10">
       {/* Show movie schedule */}
       <Tabs
         defaultActiveKey="1"

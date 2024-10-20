@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { movieService } from "../../services/movieService";
 import { NavLink } from "react-router-dom";
 import { Modal } from "antd";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 export default function ListMoviePage() {
   // Create state listMovie
@@ -10,6 +12,18 @@ export default function ListMoviePage() {
   const [isModalVisible, setIsModalVisible] = useState(false);
    // Save URL video
   const [videoUrl, setVideoUrl] = useState("");
+
+  // AOS animation
+  useEffect(() => {
+    AOS.init({
+      offset: 400,
+      delay: 0,
+      duration: 1000,
+      easing: 'ease',
+      once: true,
+    });
+    AOS.refresh();
+  }, []);
 
   //#region load API list movie
   useEffect(() => {
@@ -92,7 +106,7 @@ export default function ListMoviePage() {
   };
   //#endregion
   return (
-    <div className="mx-96 grid grid-cols-4 gap-4 pt-4">
+    <div data-aos="fade-up" data-aos-delay="800" className="mx-96 grid grid-cols-4 gap-4 pt-4">
       {renderListMovie()}
       {/* Modal show trailer */}
       <Modal
