@@ -30,6 +30,12 @@ export let adminService = {
     },
     deleteUser: (user) => {
         return http.delete(`/api/QuanLyNguoiDung/XoaNguoiDung?TaiKhoan=${user}`);
-    }
+    },
+    findUser: () => {
+        return http.get("/api/QuanLyNguoiDung/TimKiemNguoiDung?MaNhom=GP00")
+    },
+    updateUser: (data) => {
+        return http.put("/api/QuanLyNguoiDung/CapNhatThongTinNguoiDung",data)
+    },
 }
 //#endregion

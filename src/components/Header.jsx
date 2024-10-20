@@ -48,7 +48,7 @@ export default function Header() {
           navigate("/list-user");
         } else {
           setIsModalOpen(false);
-          navigate("/");
+          navigate("/user");
         }
         dispatch(turnOffLoading());
         message.success("Login Success ! Welcome to Like Flix");
@@ -89,9 +89,14 @@ export default function Header() {
       );
     } else {
       return (
-        <strong className="mt-3 bg-navbar text-white">
-          Hi,{user.taiKhoan}
-        </strong>
+        <div className="flex font-medium p-4 md:p-0 mt-4 md:mt-0 bg-navbar">
+          <NavLink
+            to="/user"
+            className="px-3 mt-3 text-white md:hover:text-red-700 md:p-0 dark:hover:bg-gray-700 cursor-pointer"
+          >
+            Hi,{user.taiKhoan}
+          </NavLink>
+        </div>
       );
     }
   };

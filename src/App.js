@@ -7,6 +7,7 @@ import BookingPage from './pages/BookingPage/BookingPage';
 import AdminListUser from './pages/AdminListUser/AdminListUser';
 import 'flowbite';
 import Spinner from './components/Spinner';
+import UserPage from './pages/UserPage/UserPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
     <Routes>
       {/* admin route */}
       <Route path='list-user' element={<Layout content={<AdminListUser/>}/>}/>
+      <Route path='user' element={<Layout content={<UserPage/>}/>}/>
       {/* user route */}
       <Route path='/' element={<Layout content={<HomePage/>}/>}/>
       <Route path='/detail/:id' element={<Layout content={<DetailPage/>}/>}/>
