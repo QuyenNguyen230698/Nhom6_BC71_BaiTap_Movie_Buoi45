@@ -37,15 +37,9 @@ export default function UserPage() {
   const [form] = Form.useForm();
 
   const handleSubmit = (values) => {
-    console.log("Form values:", values);
-    let pushValue = {...values, maNhom: "GP00"}
-    adminService.updateUser(pushValue).then((result) => {
-      console.log("🚀 ~ handleSubmit ~ result:", result)
-    }).catch((err) => {
-      console.log("🚀 ~ handleSubmit ~ err:", err)
-    })
-  };
-
+    values.maNhom = "GP00";
+    console.log("Submitted values:", values);
+  }
   //#region User Info
   let renderUser = () => {
     let foundUser = userInfo.find((item) => item.taiKhoan == user);
