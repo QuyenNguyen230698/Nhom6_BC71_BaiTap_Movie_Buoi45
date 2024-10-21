@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Switch, Button, Modal, Checkbox, Form, Input, message } from "antd";
+import { Switch, Button, Modal, Checkbox, Form, Input, message, Select } from "antd";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { http } from "../services/config";
@@ -102,8 +102,10 @@ export default function Header() {
     console.log("Failed:", errorInfo);
   };
   const onFinishRegister = (values) => {
+    let newUser = {...values, maNhom: "GP00" }
+    console.log("🚀 ~ onFinishRegister ~ newUser:", newUser)
     http
-      .post("/api/QuanLyNguoiDung/DangKy", values)
+      .post("/api/QuanLyNguoiDung/DangKy", newUser)
       .then((result) => {
         console.log("result:", result);
         message.success(t("Registration Success"));
@@ -343,8 +345,8 @@ export default function Header() {
             }}
             initialValues={{
               remember: true,
-              taiKhoan: "adNguyen",
-              matKhau: "123456",
+              taiKhoan: "bao12",
+              matKhau: "Bao@12345",
             }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}

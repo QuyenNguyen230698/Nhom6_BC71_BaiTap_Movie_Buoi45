@@ -1,25 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { adminService } from "../../services/movieService";
-import AOS from 'aos';
-import {useTranslation} from 'react-i18next';
-import 'aos/dist/aos.css';
+import AOS from "aos";
+import { useTranslation } from "react-i18next";
+import "aos/dist/aos.css";
+import { Form, Button, Input } from "antd";
 
 export default function UserPage() {
   const { t, i18n } = useTranslation();
   let [user, setuser] = useState({});
   const [userInfo, setUserInfo] = useState([]);
-    // AOS animation
-    useEffect(() => {
-      AOS.init({
-        offset: 400,
-        delay: 500,
-        duration: 1000,
-        easing: 'ease',
-        once: true,
-      });
-      AOS.refresh();
-    }, []);
-    // get user info API
+  // AOS animation
+  useEffect(() => {
+    AOS.init({
+      offset: 400,
+      delay: 500,
+      duration: 1000,
+      easing: "ease",
+      once: true,
+    });
+    AOS.refresh();
+  }, []);
+  // get user info API
   useEffect(() => {
     let dataUser = JSON.parse(localStorage.getItem("DATA_USER"));
     if (dataUser) {
@@ -32,119 +33,126 @@ export default function UserPage() {
       })
       .catch((err) => {});
   }, []);
+
+  const [form] = Form.useForm();
+
+  const handleSubmit = (values) => {
+    console.log("Form values:", values);
+    let pushValue = {...values, maNhom: "GP00"}
+    adminService.updateUser(pushValue).then((result) => {
+      console.log("🚀 ~ handleSubmit ~ result:", result)
+    }).catch((err) => {
+      console.log("🚀 ~ handleSubmit ~ err:", err)
+    })
+  };
+
   //#region User Info
   let renderUser = () => {
     let foundUser = userInfo.find((item) => item.taiKhoan == user);
     return foundUser ? (
-      <div>
-        <form
-          className="w-2/4 mx-auto bg-white rounded p-4 
-      grid grid-cols-2 gap-4"
+      <div className="w-4/5 h-4/5 p-4 bg-white rounded mt-10 mx-auto">
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleSubmit}
+          initialValues={{
+            taiKhoan: foundUser.taiKhoan,
+            matKhau: foundUser.matKhau,
+            email: foundUser.email,
+            soDt: foundUser.soDT,
+            maLoaiNguoiDung: foundUser.maLoaiNguoiDung,
+            hoTen: foundUser.hoTen,
+          }}
+          
         >
-          <div>
-            <label
-              htmlFor="small-input"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              {t("Account")}
-            </label>
-            <input
-              value={foundUser.taiKhoan}
-              type="text"
-              id="small-input"
-              className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs"
-              disabled
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="small-input"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              {t("Password")}
-            </label>
-            <input
-              value={foundUser.matKhau}
-              type="password"
-              id="small-input"
-              className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-red-500 focus:border-red-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="small-input"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              {t("Name")}
-            </label>
-            <input
-              value={foundUser.hoTen}
-              type="text"
-              id="small-input"
-              className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-red-500 focus:border-red-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="small-input"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Email
-            </label>
-            <input
-              value={foundUser.email}
-              type="email"
-              id="small-input"
-              className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-red-500 focus:border-red-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="small-input"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              {t("Phone Number")}
-            </label>
-            <input
-              value={foundUser.soDT}
-              type="text"
-              id="small-input"
-              className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-red-500 focus:border-red-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="small-input"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              {t("Type user")}
-            </label>
-            <input
-              value={foundUser.maLoaiNguoiDung}
-              type="text"
-              id="userInfomall-input"
-              className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs"
-              disabled
-            />
-          </div>
-          <div></div>
-          <button className="bg-button p-2 rounded text-white hover:bg-orange-600">
-            {t("Update")}
-          </button>
-        </form>
+          <Form.Item
+            label="Account"
+            name="taiKhoan"
+            rules={[{ required: true, message: "Please enter your account!" }]}
+          >
+            <Input placeholder="Enter your account" disabled />
+          </Form.Item>
+
+          <Form.Item
+            label="Password"
+            name="matKhau"
+            rules={[{ required: true, message: "Please enter your password!" }]}
+          >
+            <Input.Password placeholder="Enter your password" />
+          </Form.Item>
+
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[{ required: true, message: "Please enter your email!" }]}
+          >
+            <Input placeholder="Enter your email" />
+          </Form.Item>
+
+          <Form.Item
+            label="Phone number"
+            name="soDt"
+            rules={[
+              { required: true, message: "Please enter your phone number!" },
+            ]}
+          >
+            <Input placeholder="Enter your phone number" />
+          </Form.Item>
+
+          <Form.Item
+            label="Group code"
+            name="maNhom"
+            hidden
+            rules={[{ required: true, message: "Please enter your group code!" }]}
+          >
+            <Input placeholder="Enter your group code" disabled />
+          </Form.Item>
+
+          <Form.Item
+            label="User type"
+            name="maLoaiNguoiDung"
+            rules={[
+              { required: true, message: "Please enter your user type!" },
+            ]}
+          >
+            <Input placeholder="Enter your user type" disabled />
+          </Form.Item>
+
+          <Form.Item
+            label="Full name"
+            name="hoTen"
+            rules={[{ required: true, message: "Please enter your full name!" }]}
+          >
+            <Input placeholder="Enter your full name" />
+          </Form.Item>
+
+          <Form.Item className="h-full w-full flex justify-center items-center">
+            <Button type="primary" htmlType="submit">
+              Update user info
+            </Button>
+          </Form.Item>
+        </Form>
       </div>
     ) : (
       <p>{t("User not found.")}</p>
     );
   };
   //#endregion
-  
+
   return (
-    <div data-aos="fade-up" data-aos-delay="500" className="bg-layout h-screen pt-20">
+    <div
+      data-aos="fade-up"
+      data-aos-delay="500"
+      className="grid grid-cols-2 h-screen pt-20"
+    >
       {/* User Info */}
       {renderUser()}
       {/* Ticket Info */}
-      <div data-aos="fade-up" data-aos-delay="800" className="w-2/4 p-4 bg-white rounded mt-10 mx-auto">
+      <div
+        data-aos="fade-up"
+        data-aos-delay="700"
+        className="w-3/4 h-3/4 p-4 bg-white rounded mt-10 mx-auto"
+      >
         <h2 className="text-center px-4 pb-4 text-3xl text-color">
           {t("Booking history")}
         </h2>
@@ -154,7 +162,10 @@ export default function UserPage() {
             <p>{t("Booking date")}: </p>
             <p className="text-color ">{t("Movie name")}: </p>
             <p className="text-nowrap">
-              <span>{t("Duration")}: 120 {t("minutes")}</span>,<span>{t("Ticket price")}: </span>
+              <span>
+                {t("Duration")}: 120 {t("minutes")}
+              </span>
+              ,<span>{t("Ticket price")}: </span>
             </p>
             <p className="text-green-500">{t("Theater")}: </p>
             <p className="text-nowrap mb-2">
@@ -166,7 +177,10 @@ export default function UserPage() {
             <p>{t("Booking date")}: </p>
             <p className="text-color ">{t("Movie name")}: </p>
             <p className="text-nowrap">
-              <span>{t("Duration")}: 120 {t("minutes")}</span>,<span>{t("Ticket price")}: </span>
+              <span>
+                {t("Duration")}: 120 {t("minutes")}
+              </span>
+              ,<span>{t("Ticket price")}: </span>
             </p>
             <p className="text-green-500">{t("Theaters")}: </p>
             <p className="text-nowrap mb-2">
