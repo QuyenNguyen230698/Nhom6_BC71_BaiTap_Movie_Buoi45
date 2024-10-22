@@ -1,6 +1,6 @@
 import React,{useEffect, useState} from 'react'
 import { adminService } from '../../services/movieService';
-import {Table, Tag, message, Button, Modal, Form, Input, Select} from 'antd';
+import {Table, Tag, message, Button, Modal, Form, Input, Select, Layout, Menu, theme} from 'antd';
 import { useDispatch } from 'react-redux';
 import { turnOffLoading } from '../reduxMovie/spinnerSlice';
 import { useNavigate } from 'react-router-dom';
@@ -8,11 +8,24 @@ import AOS from 'aos';
 import {useTranslation} from 'react-i18next';
 import {http} from '../../services/config';
 import 'aos/dist/aos.css';
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  UploadOutlined,
+  UserOutlined,
+  VideoCameraOutlined,
+} from '@ant-design/icons';
 
 export default function AdminListUser() {
   let dispatch = useDispatch()
   let navigate = useNavigate()
   const { t, i18n } = useTranslation();
+  const [collapsed, setCollapsed] = useState(false);
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
+  const { Header, Sider, Content } = Layout;
+  const [activeContent, setActiveContent] = useState('userTable');
 
   // AOS animation
   useEffect(() => {
@@ -47,7 +60,7 @@ export default function AdminListUser() {
   }, []);
   //#endregion
 
-//#region delete users and admin in new array
+//#region delete users and admin 
 let handleDeleteUser = async (user) => {
   try {
     let result = await adminService.deleteUser(user);
@@ -101,6 +114,7 @@ const onFinishRegister = (values) => {
       message.error(t("Add Failed Please Check Your Information"));
     });
 };
+//#endregion
 
 const columns = [
   {
@@ -161,22 +175,88 @@ const columns = [
       }
     },
 ];
-//#endregion
-  return (
-    <div data-aos="fade-up" data-aos-delay="500" className='container mx-auto px-4 py-20'>
-      <div className='bg-white rounded-lg shadow-md overflow-hidden'>
-        <Table 
-          className='w-full' 
-          dataSource={listUser} 
-          columns={columns} 
-          rowKey="taiKhoan"
-          pagination={{ 
-            pageSize: 10, 
-            position: ['bottomCenter'],
-            className: 'py-4'
-          }}
+
+const menuItems = [
+  {
+    key: '1',
+    icon: <UserOutlined />,
+    label: t('User Management'),
+    onClick: () => setActiveContent('userTable')
+  },
+  {
+    key: '2',
+    icon: <VideoCameraOutlined />,
+    label: t('Movie Management'),
+    onClick: () => setActiveContent('movieManagement')
+  },
+  {
+    key: '3',
+    icon: <UploadOutlined />,
+    label: t('Showtimes Management'),
+    onClick: () => setActiveContent('showtimesManagement')
+  },
+];
+
+return (
+    <div data-aos="fade-up" data-aos-delay="500" className='pt-20'>
+      <Layout>
+      <Sider trigger={null} collapsible collapsed={collapsed}>
+        <div className="demo-logo-vertical" />
+        <Menu
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={['1']}
+          items={menuItems}
         />
-      </div>
+      </Sider>
+      <Layout>
+        <Header
+          style={{
+            padding: 0,
+            background: colorBgContainer,
+          }}
+        >
+          <Button
+            type="text"
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            onClick={() => setCollapsed(!collapsed)}
+            style={{
+              fontSize: '16px',
+              width: 64,
+              height: 64,
+            }}
+          />
+        </Header>
+        <Content
+          style={{
+            margin: '24px 16px',
+            minHeight: 280,
+            background: colorBgContainer,
+            borderRadius: borderRadiusLG,
+          }}
+        >
+          {activeContent === 'userTable' && (
+            <Table 
+              className='w-full' 
+              dataSource={listUser} 
+              columns={columns} 
+              rowKey="taiKhoan"
+              pagination={{ 
+                pageSize: 10, 
+                position: ['bottomCenter'],
+                className: 'py-4'
+              }}
+            />
+          )}
+          {activeContent === 'movieManagement' && (
+            <div>{t('Movie Management Content')}</div>
+          )}
+          {activeContent === 'showtimesManagement' && (
+            <div>{t('Showtimes Management Content')}</div>
+          )}
+        </Content>
+      </Layout>
+    </Layout>
       <Modal
         title={t("Add account")}
         open={isRegisterModalOpen}

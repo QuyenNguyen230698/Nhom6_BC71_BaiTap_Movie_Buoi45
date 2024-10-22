@@ -11,6 +11,7 @@ export default function UserPage() {
   let [user, setuser] = useState({});
   const [userInfo, setUserInfo] = useState([]);
   const [ticketInfo, setTicketInfo] = useState({});
+  const [form] = Form.useForm();
   // AOS animation
   useEffect(() => {
     AOS.init({
@@ -35,9 +36,44 @@ export default function UserPage() {
       })
       .catch((err) => {});
   }, []);
+  
+  //#region Ticket Info
+let foundUser = userInfo.find((item) => item.taiKhoan == user);
+useEffect(() => {
+  if (foundUser) {
+    movieService.getTicket(foundUser)
+      .then((result) => {
+        setTicketInfo(result.data.content);
+      }).catch((err) => {
+        console.log('err:', err);
+      });
+  }
+}, [foundUser]);
 
-  const [form] = Form.useForm();
+let renderTicket = () => {
+  if (!ticketInfo.thongTinDatVe || ticketInfo.thongTinDatVe.length === 0) {
+    return <p className="text-center text-gray-500 italic">{t("No booking history available.")}</p>;
+  }
 
+  return ticketInfo.thongTinDatVe.map((ticket, index) => (
+    <div key={index} className="mb-4 p-4 bg-gray-100 rounded-lg shadow-sm mt-2">
+      <div className="flex justify-between items-center mb-2">
+        <p className="font-semibold text-lg text-color">{ticket.tenPhim}</p>
+        <p className="text-sm text-gray-600">{new Date(ticket.ngayDat).toLocaleString()}</p>
+      </div>
+      <div className="grid grid-cols-2 gap-2 text-sm">
+        <p><span className="font-medium">{t("Duration")}:</span> {ticket.thoiLuongPhim} {t("minutes")}</p>
+        {ticket.giaVe && <p><span className="font-medium">{t("Ticket price")}:</span> {(ticket.giaVe * ticket.danhSachGhe.length).toLocaleString()} VND</p>}
+        <p><span className="font-medium">{t("Theater")}:</span> {ticket.danhSachGhe[0].tenHeThongRap}</p>
+        <p><span className="font-medium">{t("Schedule")}:</span> {ticket.danhSachGhe[0].tenRap}</p>
+      </div>
+      <p className="mt-2 text-sm"><span className="font-medium">{t("Chair")}:</span> {ticket.danhSachGhe.map(ghe => ghe.tenGhe).join(', ')}</p>
+    </div>
+  ));
+};
+//#endregion
+
+  //#region User Info
   const handleSubmit = (values) => {
     values.maNhom = "GP00";
     console.log("Submitted values:", values);
@@ -48,42 +84,6 @@ export default function UserPage() {
       message.error(t("Update failed"));
     })
   }
-
-  let foundUser = userInfo.find((item) => item.taiKhoan == user);
-  useEffect(() => {
-    if (foundUser) {
-      movieService.getTicket(foundUser)
-        .then((result) => {
-          setTicketInfo(result.data.content);
-        }).catch((err) => {
-          console.log('err:', err);
-        });
-    }
-  }, [foundUser]);
-
-  let renderTicket = () => {
-    if (!ticketInfo.thongTinDatVe || ticketInfo.thongTinDatVe.length === 0) {
-      return <p>{t("No booking history available.")}</p>;
-    }
-
-    return ticketInfo.thongTinDatVe.map((ticket, index) => (
-      <div key={index} className="py-2">
-        <p>{t("Booking date")}: {new Date(ticket.ngayDat).toLocaleString()}</p>
-        <p className="text-color">{t("Movie name")}: {ticket.tenPhim}</p>
-        <p className="text-nowrap">
-          <span>{t("Duration")}: {ticket.thoiLuongPhim} {t("minutes")}</span>
-          {ticket.giaVe && <span>, {t("Ticket price")}: {(ticket.giaVe * ticket.danhSachGhe.length).toLocaleString()} VND</span>}
-        </p>
-        <p className="text-green-500">{t("Theater")}: {ticket.danhSachGhe[0].tenHeThongRap}</p>
-        <p className="text-nowrap mb-2">
-          <span>{t("Schedule")}: {ticket.danhSachGhe[0].tenRap}</span>,
-          <span> {t("Chair")}: {ticket.danhSachGhe.map(ghe => ghe.tenGhe).join(', ')}</span>
-        </p>
-        <hr className="hr" />
-      </div>
-    ));
-  };
-  //#region User Info
   let renderUser = () => {
     let foundUser = userInfo.find((item) => item.taiKhoan == user);
     return foundUser ? (
@@ -179,13 +179,13 @@ export default function UserPage() {
       <div
         data-aos="fade-up"
         data-aos-delay="700"
-        className="w-3/4 h-3/4 p-4 bg-white rounded mt-10 mx-auto"
+        className="w-3/4 p-4 bg-white rounded mt-10 mx-auto overflow-y-auto max-h-[calc(100vh-120px)]"
       >
         <h2 className="text-center px-4 pb-4 text-3xl text-color">
           {t("Booking history")}
         </h2>
-        <hr className="hr" />
-        <div>
+        <hr className="hr mb-4" />
+        <div className="space-y-4">
           {renderTicket()}
         </div>
       </div>
