@@ -94,15 +94,6 @@ export default function UserPage() {
           </Form.Item>
 
           <Form.Item
-            label="Group code"
-            name="maNhom"
-            hidden
-            rules={[{ required: true, message: "Please enter your group code!" }]}
-          >
-            <Input placeholder="Enter your group code" disabled />
-          </Form.Item>
-
-          <Form.Item
             label="User type"
             name="maLoaiNguoiDung"
             rules={[
