@@ -19,6 +19,9 @@ export let movieService = {
     },
     bookTicket: (data) => {
         return http.post("/api/QuanLyDatVe/DatVe", data)
+    },
+    getTicket: (account) => {
+        return http.post("/api/QuanLyNguoiDung/ThongTinTaiKhoan",account)
     }
 }
 //#endregion

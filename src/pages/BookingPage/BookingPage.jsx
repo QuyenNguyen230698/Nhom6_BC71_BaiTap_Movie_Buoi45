@@ -51,7 +51,6 @@ export default function BookingPage() {
     );
 
     const handleBookTicket = () => {
-        const user = JSON.parse(localStorage.getItem("DATA_USER"));
         const bookingInfo = {
             maLichChieu:movieInfo.maLichChieu,
             danhSachVe:selectedSeats.map((ghe) => ({
@@ -59,10 +58,12 @@ export default function BookingPage() {
                 giaVe: ghe.giaVe,
             }))
         };
-        movieService.bookTicket(bookingInfo).then((result) => {
-          console.log('Booking Information:', result)
+        console.log("values:", bookingInfo)
+        movieService.bookTicket(bookingInfo)
+        .then((result) => {
+          message.success(t("Booking successful"));
         }).catch((err) => {
-          console.log('Booking Information:', err)
+          message.error(t("Booking failed"));
         })
       };
   

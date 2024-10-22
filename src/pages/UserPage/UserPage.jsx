@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { adminService } from "../../services/movieService";
+import { adminService, movieService } from "../../services/movieService";
 import AOS from "aos";
 import { useTranslation } from "react-i18next";
 import "aos/dist/aos.css";
 import { Form, Button, Input } from "antd";
+import { message } from "antd/es";
 
 export default function UserPage() {
   const { t, i18n } = useTranslation();
   let [user, setuser] = useState({});
   const [userInfo, setUserInfo] = useState([]);
+  const [ticketInfo, setTicketInfo] = useState({});
   // AOS animation
   useEffect(() => {
     AOS.init({
@@ -39,7 +41,48 @@ export default function UserPage() {
   const handleSubmit = (values) => {
     values.maNhom = "GP00";
     console.log("Submitted values:", values);
+    adminService.updateUser(values)
+    .then((result) => {
+      message.success(t("Update successful"));
+    }).catch((err) => {
+      message.error(t("Update failed"));
+    })
   }
+
+  let foundUser = userInfo.find((item) => item.taiKhoan == user);
+  useEffect(() => {
+    if (foundUser) {
+      movieService.getTicket(foundUser)
+        .then((result) => {
+          setTicketInfo(result.data.content);
+        }).catch((err) => {
+          console.log('err:', err);
+        });
+    }
+  }, [foundUser]);
+
+  let renderTicket = () => {
+    if (!ticketInfo.thongTinDatVe || ticketInfo.thongTinDatVe.length === 0) {
+      return <p>{t("No booking history available.")}</p>;
+    }
+
+    return ticketInfo.thongTinDatVe.map((ticket, index) => (
+      <div key={index} className="py-2">
+        <p>{t("Booking date")}: {new Date(ticket.ngayDat).toLocaleString()}</p>
+        <p className="text-color">{t("Movie name")}: {ticket.tenPhim}</p>
+        <p className="text-nowrap">
+          <span>{t("Duration")}: {ticket.thoiLuongPhim} {t("minutes")}</span>
+          {ticket.giaVe && <span>, {t("Ticket price")}: {(ticket.giaVe * ticket.danhSachGhe.length).toLocaleString()} VND</span>}
+        </p>
+        <p className="text-green-500">{t("Theater")}: {ticket.danhSachGhe[0].tenHeThongRap}</p>
+        <p className="text-nowrap mb-2">
+          <span>{t("Schedule")}: {ticket.danhSachGhe[0].tenRap}</span>,
+          <span> {t("Chair")}: {ticket.danhSachGhe.map(ghe => ghe.tenGhe).join(', ')}</span>
+        </p>
+        <hr className="hr" />
+      </div>
+    ));
+  };
   //#region User Info
   let renderUser = () => {
     let foundUser = userInfo.find((item) => item.taiKhoan == user);
@@ -142,37 +185,8 @@ export default function UserPage() {
           {t("Booking history")}
         </h2>
         <hr className="hr" />
-        <div className="grid grid-cols-2">
-          <div className="py-2">
-            <p>{t("Booking date")}: </p>
-            <p className="text-color ">{t("Movie name")}: </p>
-            <p className="text-nowrap">
-              <span>
-                {t("Duration")}: 120 {t("minutes")}
-              </span>
-              ,<span>{t("Ticket price")}: </span>
-            </p>
-            <p className="text-green-500">{t("Theater")}: </p>
-            <p className="text-nowrap mb-2">
-              <span>{t("Schedule")}: </span>,<span>{t("Chair")}: </span>
-            </p>
-            <hr className="hr" />
-          </div>
-          <div className="py-2">
-            <p>{t("Booking date")}: </p>
-            <p className="text-color ">{t("Movie name")}: </p>
-            <p className="text-nowrap">
-              <span>
-                {t("Duration")}: 120 {t("minutes")}
-              </span>
-              ,<span>{t("Ticket price")}: </span>
-            </p>
-            <p className="text-green-500">{t("Theaters")}: </p>
-            <p className="text-nowrap mb-2">
-              <span>{t("Schedule")}: </span>,<span>{t("Chair")}: </span>
-            </p>
-            <hr className="hr" />
-          </div>
+        <div>
+          {renderTicket()}
         </div>
       </div>
     </div>
