@@ -12,6 +12,7 @@ export default function UserPage() {
   const [userInfo, setUserInfo] = useState([]);
   const [ticketInfo, setTicketInfo] = useState({});
   const [form] = Form.useForm();
+
   // AOS animation
   useEffect(() => {
     AOS.init({
@@ -23,6 +24,7 @@ export default function UserPage() {
     });
     AOS.refresh();
   }, []);
+
   // get user info API
   useEffect(() => {
     let dataUser = JSON.parse(localStorage.getItem("DATA_USER"));
@@ -36,7 +38,7 @@ export default function UserPage() {
       })
       .catch((err) => {});
   }, []);
-  
+
   //#region Ticket Info
 let foundUser = userInfo.find((item) => item.taiKhoan == user);
 useEffect(() => {

@@ -40,5 +40,11 @@ export let adminService = {
     updateUser: (data) => {
         return http.put("/api/QuanLyNguoiDung/CapNhatThongTinNguoiDung",data)
     },
+    deleteMovie: (maPhim) => {
+        return http.delete(`/api/QuanLyPhim/XoaPhim?MaPhim=${maPhim}`)
+    },
+    addMovie: (data) => {
+        return http.post("/api/QuanLyPhim/ThemPhimUploadHinh",data)
+    },
 }
 //#endregion
