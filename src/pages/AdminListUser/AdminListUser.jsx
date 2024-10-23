@@ -12,10 +12,6 @@ import {
   Layout,
   Menu,
   theme,
-  DatePicker,
-  Switch,
-  Upload,
-  InputNumber,
 } from "antd";
 import { useDispatch } from "react-redux";
 import { turnOffLoading } from "../reduxMovie/spinnerSlice";
@@ -30,8 +26,6 @@ import {
   CloudUploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
-  PlusOutlined,
-  UploadOutlined,
 } from "@ant-design/icons";
 
 export default function AdminListUser() {
@@ -47,7 +41,6 @@ export default function AdminListUser() {
   const [form] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [file, setFile] = useState(null);
 
   // AOS animation
   useEffect(() => {
@@ -179,46 +172,6 @@ export default function AdminListUser() {
   };
   const showAddMovieModal = () => {
     setIsAddMovieModalOpen(true);
-  };
-  const onFinishAddMovie = async (values) => {
-    try {
-      const formData = await new Promise((resolve) => {
-        const formData = new FormData();
-        
-        // Thêm tất cả các trường dữ liệu vào formData
-        formData.append('tenPhim', values.tenPhim);
-        formData.append('trailer', values.trailer);
-        formData.append('moTa', values.moTa);
-        formData.append('maNhom', values.maNhom);
-        formData.append('ngayKhoiChieu', values.ngayKhoiChieu.format('DD/MM/YYYY'));
-        formData.append('sapChieu', values.sapChieu);
-        formData.append('dangChieu', values.dangChieu);
-        formData.append('hot', values.hot);
-        formData.append('danhGia', values.danhGia);
-        formData.append('File', file);
-
-        console.log('values', values);
-        console.log('file', file);
-
-        // Kiểm tra và in ra nội dung của formData
-        console.log('formData contents:');
-        for (let [key, value] of formData.entries()) {
-          console.log(key, value);
-        }
-
-        resolve(formData);
-      });
-
-      // Gọi API để thêm phim mới
-      const result = await adminService.addMovie(formData);
-      console.log("result:", result);
-      message.success(t('Movie added successfully'));
-      setIsAddMovieModalOpen(false);
-      fetchListMovie(); // Cập nhật lại danh sách phim
-    } catch (error) {
-      console.error('Error adding movie:', error);
-      message.error(t('Failed to add movie'));
-    }
   };
 
   //#endregion
@@ -374,12 +327,13 @@ export default function AdminListUser() {
       label: t("Movie Management"),
       onClick: () => setActiveContent("movieManagement"),
     },
+    {
+      key: "3",
+      icon: <CloudUploadOutlined />,
+      label: t("Upload Movie"),
+      onClick: () => setActiveContent("uploadMovie"),
+    }
   ];
-
-  const handleFileChange = (event) => {
-    console.log("🚀 ~ handleFileChange ~ event:", event.target.files[0]);
-    setFile(event.target.files[0]);
-  };
 
   return (
     <div data-aos="fade-up" data-aos-delay="500" className="pt-20">
@@ -411,7 +365,6 @@ export default function AdminListUser() {
               }}
             />
             <Button onClick={showRegisterModal}>{t("Add")}</Button>
-            <Button onClick={showAddMovieModal}>{t("Add Movie")}</Button>
           </Header>
           <Content
             style={{
@@ -448,7 +401,7 @@ export default function AdminListUser() {
               />
             )}
             {activeContent === "uploadMovie" && (
-              <div>{t("Upload Movie Content")}</div>
+              <div>Upload Movie Content</div>
             )}
           </Content>
         </Layout>
@@ -614,99 +567,6 @@ export default function AdminListUser() {
           <Form.Item className="h-full w-full flex justify-center items-center">
             <Button type="primary" htmlType="submit">
               Update user info
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
-      {/* Add Movie Modal */}
-      <Modal
-        title={t("Add Movie")}
-        open={isAddMovieModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        footer={null}
-      >
-        <Form
-          form={form}
-          name="addMovie"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 24 }}
-          layout="vertical"
-          onFinish={onFinishAddMovie}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-          initialValues={{
-            maNhom: "GP01",
-            sapChieu: true,
-            dangChieu: false,
-            hot: true,
-            danhGia: 10,
-          }}
-        >
-          <Form.Item
-            label={t("Movie Name")}
-            name="tenPhim"
-            rules={[{ required: true, message: t("Please input the movie name!") }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label={t("Trailer")}
-            name="trailer"
-            rules={[{ required: true, message: t("Please input the trailer URL!") }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label={t("Description")}
-            name="moTa"
-            rules={[{ required: true, message: t("Please input the description!") }]}
-          >
-            <Input.TextArea />
-          </Form.Item>
-
-          <Form.Item
-            label={t("Group Code")}
-            name="maNhom"
-          >
-            <Input disabled />
-          </Form.Item>
-
-          <Form.Item
-            label={t("Release Date")}
-            name="ngayKhoiChieu"
-            rules={[{ required: true, message: t("Please select the release date!") }]}
-          >
-            <DatePicker format="DD/MM/YYYY" />
-          </Form.Item>
-
-          <Form.Item label={t("Coming Soon")} name="sapChieu" valuePropName="checked">
-            <Switch />
-          </Form.Item>
-
-          <Form.Item label={t("Now Showing")} name="dangChieu" valuePropName="checked">
-            <Switch />
-          </Form.Item>
-
-          <Form.Item label={t("Hot")} name="hot" valuePropName="checked">
-            <Switch />
-          </Form.Item>
-
-          <Form.Item
-            label={t("Rating")}
-            name="danhGia"
-            rules={[{ required: true, message: t("Please input the rating!") }]}
-          >
-            <InputNumber min={1} max={10} />
-          </Form.Item>
-
-          <input onChange={handleFileChange} type="file" class="hidden" />
-
-          <Form.Item wrapperCol={{ offset: 0, span: 24 }}>
-            <Button block type="primary" htmlType="submit">
-              {t("Add Movie")}
             </Button>
           </Form.Item>
         </Form>
