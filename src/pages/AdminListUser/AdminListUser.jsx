@@ -180,38 +180,45 @@ export default function AdminListUser() {
   const showAddMovieModal = () => {
     setIsAddMovieModalOpen(true);
   };
-  const onFinishAddMovie = (values) => {
-    const formData = new FormData();
-    
-    // Thêm tất cả các trường dữ liệu vào formData
-    formData.append('tenPhim', values.tenPhim);
-    formData.append('trailer', values.trailer);
-    formData.append('moTa', values.moTa);
-    formData.append('maNhom', values.maNhom);
-    formData.append('ngayKhoiChieu', values.ngayKhoiChieu.format('DD/MM/YYYY'));
-    formData.append('sapChieu', values.sapChieu);
-    formData.append('dangChieu', values.dangChieu);
-    formData.append('hot', values.hot);
-    formData.append('danhGia', values.danhGia);
-    formData.append('File',file);
-    console.log('values',values)
-    console.log('file',file,)
-    setTimeout(() => {
-      console.log('formData',formData)
-    }, 2000)
+  const onFinishAddMovie = async (values) => {
+    try {
+      const formData = await new Promise((resolve) => {
+        const formData = new FormData();
+        
+        // Thêm tất cả các trường dữ liệu vào formData
+        formData.append('tenPhim', values.tenPhim);
+        formData.append('trailer', values.trailer);
+        formData.append('moTa', values.moTa);
+        formData.append('maNhom', values.maNhom);
+        formData.append('ngayKhoiChieu', values.ngayKhoiChieu.format('DD/MM/YYYY'));
+        formData.append('sapChieu', values.sapChieu);
+        formData.append('dangChieu', values.dangChieu);
+        formData.append('hot', values.hot);
+        formData.append('danhGia', values.danhGia);
+        formData.append('File', file);
 
-    // Gọi API để thêm phim mới
-    adminService.addMovie(formData)
-      .then(result => {
-        console.log("result:", result);
-        message.success(t('Movie added successfully'));
-        setIsAddMovieModalOpen(false);
-        fetchListMovie(); // Cập nhật lại danh sách phim
-      })
-      .catch(error => {
-        console.error('Error adding movie:', error);
-        message.error(t('Failed to add movie'));
+        console.log('values', values);
+        console.log('file', file);
+
+        // Kiểm tra và in ra nội dung của formData
+        console.log('formData contents:');
+        for (let [key, value] of formData.entries()) {
+          console.log(key, value);
+        }
+
+        resolve(formData);
       });
+
+      // Gọi API để thêm phim mới
+      const result = await adminService.addMovie(formData);
+      console.log("result:", result);
+      message.success(t('Movie added successfully'));
+      setIsAddMovieModalOpen(false);
+      fetchListMovie(); // Cập nhật lại danh sách phim
+    } catch (error) {
+      console.error('Error adding movie:', error);
+      message.error(t('Failed to add movie'));
+    }
   };
 
   //#endregion
