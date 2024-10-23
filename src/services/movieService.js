@@ -43,8 +43,8 @@ export let adminService = {
     deleteMovie: (maPhim) => {
         return http.delete(`/api/QuanLyPhim/XoaPhim?MaPhim=${maPhim}`)
     },
-    addMovie: (data) => {
-        return http.post("/api/QuanLyPhim/ThemPhimUploadHinh",data)
+    addMovie: (formData) => {
+        return http.post(`/api/QuanLyPhim/ThemPhimUploadHinh`,formData)
     },
 }
 //#endregion

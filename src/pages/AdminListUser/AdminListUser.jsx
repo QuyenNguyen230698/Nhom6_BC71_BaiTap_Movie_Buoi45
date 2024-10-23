@@ -12,6 +12,10 @@ import {
   Layout,
   Menu,
   theme,
+  Upload,
+  Switch,
+  DatePicker,
+  InputNumber,
 } from "antd";
 import { useDispatch } from "react-redux";
 import { turnOffLoading } from "../reduxMovie/spinnerSlice";
@@ -27,6 +31,8 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons";
+import { useFormik } from 'formik';
+import moment from "moment";
 
 export default function AdminListUser() {
   let dispatch = useDispatch();
@@ -41,6 +47,7 @@ export default function AdminListUser() {
   const [form] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
 
   // AOS animation
   useEffect(() => {
@@ -335,6 +342,75 @@ export default function AdminListUser() {
     }
   ];
 
+  const formik = useFormik({
+    initialValues: {
+      tenPhim: '',
+      trailer: '',
+      moTa: '',
+      ngayKhoiChieu: '',
+      dangChieu: false,
+      sapChieu: false,
+      hot: false,
+      danhGia: 0,
+      hinhAnh: {},
+    },
+    onSubmit: (values) => {
+      console.log('Form submitted with values:', values);
+      values.maNhom = "GP01";
+      let formData = new FormData()
+      for (let key in values) {
+        if (key !== "hinhAnh") {
+          formData.append(key, values[key])
+        } else {
+          formData.append("File", values.hinhAnh, values.hinhAnh.name)
+        }
+      }
+
+      adminService.addMovie(formData)
+      .then((result) => {
+        fetchListMovie()
+        message.success(t("Upload successful"))
+      }).catch((err) => {
+        dispatch(turnOffLoading())
+        message.error(t("Upload failed"))
+      });
+    },
+  });
+
+  let handleDateChange = (date) => {
+    let ngayKhoiChieu = moment(date).format("DD/MM/YYYY")
+    formik.setFieldValue("ngayKhoiChieu", ngayKhoiChieu)
+  }
+
+  let handleSwitchChange = (name) => {
+    return (checked) => {
+      formik.setFieldValue(name, checked);
+    };
+  };
+
+  let handleFileChange = (e) => {
+    let file = e.target.files[0];
+    
+    // Check if file is of allowed type
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/gif'];
+    if (file && allowedTypes.includes(file.type)) {
+      formik.setFieldValue("hinhAnh", file);
+      
+      // Create a preview URL for the selected image
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      // If file type is not allowed, clear the file input and show an error message
+      e.target.value = '';
+      setPreviewImage(null);
+      formik.setFieldValue("hinhAnh", {});
+      message.error(t('Please select a PNG, JPG, or GIF image file.'));
+    }
+  }
+
   return (
     <div data-aos="fade-up" data-aos-delay="500" className="pt-20">
       <Layout>
@@ -401,7 +477,101 @@ export default function AdminListUser() {
               />
             )}
             {activeContent === "uploadMovie" && (
-              <div>Upload Movie Content</div>
+              <div className="p-4">
+                <h2 className="text-2xl font-bold mb-4">{t("Upload Movie")}</h2>
+                <Form
+                  layout="vertical"
+                  onFinish={formik.handleSubmit}
+                >
+                  <Form.Item label={t("Movie Name")} required>
+                    <Input
+                      name="tenPhim"
+                      onChange={formik.handleChange}
+                      value={formik.values.tenPhim}
+                    />
+                  </Form.Item>
+
+                  <Form.Item label={t("Trailer")} required>
+                    <Input
+                      name="trailer"
+                      onChange={formik.handleChange}
+                      value={formik.values.trailer}
+                    />
+                  </Form.Item>
+
+                  <Form.Item label={t("Description")} required>
+                    <Input.TextArea
+                      name="moTa"
+                      onChange={formik.handleChange}
+                      value={formik.values.moTa}
+                    />
+                  </Form.Item>
+
+                  <Form.Item label={t("Release Date")} required>
+                    <DatePicker
+                      name="ngayKhoiChieu" format={"DD/MM/YYYY"}
+                      onChange={handleDateChange}
+                    />
+                  </Form.Item>
+
+                  <Form.Item label={t("Now Showing")}>
+                    <Switch
+                      name="dangChieu"
+                      onChange={handleSwitchChange("dangChieu")}
+                      checked={formik.values.dangChieu}
+                    />
+                  </Form.Item>
+
+                  <Form.Item label={t("Coming Soon")}>
+                    <Switch
+                      name="sapChieu"
+                      onChange={handleSwitchChange("sapChieu")}
+                      checked={formik.values.sapChieu}
+                    />
+                  </Form.Item>
+
+                  <Form.Item label={t("Hot")}>
+                    <Switch
+                      name="hot"
+                      onChange={handleSwitchChange("hot")}
+                      checked={formik.values.hot}
+                    />
+                  </Form.Item>
+
+                  <Form.Item label={t("Rating")} required>
+                    <InputNumber
+                      name="danhGia"
+                      min={0}
+                      max={10}
+                      onChange={(value) => formik.setFieldValue('danhGia', value)}
+                      value={formik.values.danhGia}
+                    />
+                  </Form.Item>
+
+                  <Form.Item label={t("Movie Poster")}>
+                    <input
+                      type="file"
+                      onChange={handleFileChange}
+                      className="mb-2"
+                    />
+                    {previewImage && (
+                      <div className="mt-2">
+                        <img
+                          src={previewImage}
+                          alt="Movie Poster Preview"
+                          className="max-w-xs max-h-64 object-contain rounded-lg shadow-md"
+                        />
+                      </div>
+                    )}
+                  </Form.Item>
+
+                  <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                      {t("Upload Movie")}
+                    </Button>
+                  </Form.Item>
+                </Form>
+              </div>
             )}
           </Content>
         </Layout>
