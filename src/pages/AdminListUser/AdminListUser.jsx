@@ -1,23 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { adminService, movieService } from "../../services/movieService";
-import {
-  Table,
-  Tag,
-  message,
-  Button,
-  Modal,
-  Form,
-  Input,
-  Select,
-  Layout,
-  Menu,
-  theme,
-  Upload,
-  Switch,
-  DatePicker,
-  InputNumber,
-  TimePicker,
-} from "antd";
+import {Table,Tag,message,Button,Modal,Form,Input,Select,Layout,Menu,theme,Switch,DatePicker,InputNumber,TimePicker} from "antd";
 import { useDispatch } from "react-redux";
 import { turnOffLoading } from "../reduxMovie/spinnerSlice";
 import { useNavigate } from "react-router-dom";
@@ -34,7 +17,6 @@ import {
 } from "@ant-design/icons";
 import { useFormik } from "formik";
 import moment from "moment";
-import Search from "antd/es/transfer/search";
 
 export default function AdminListUser() {
   let dispatch = useDispatch();
@@ -537,6 +519,7 @@ export default function AdminListUser() {
 
   return (
     <div data-aos="fade-up" data-aos-delay="500" className="pt-20">
+      {/* layout Pages */}
       <Layout style={{ minHeight: "100vh" }}>
         <Sider trigger={null} collapsible collapsed={collapsed}>
           <div className="demo-logo-vertical" />
