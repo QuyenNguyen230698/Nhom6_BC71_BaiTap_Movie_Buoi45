@@ -355,8 +355,8 @@ export default function AdminListUser() {
       hinhAnh: {},
     },
     onSubmit: (values) => {
-      console.log('Form submitted with values:', values);
       values.maNhom = "GP01";
+      console.log('Form submitted with values:', values);
       let formData = new FormData()
       for (let key in values) {
         if (key !== "hinhAnh") {
@@ -368,9 +368,11 @@ export default function AdminListUser() {
 
       adminService.addMovie(formData)
       .then((result) => {
+        console.log('result',result)
         fetchListMovie()
         message.success(t("Upload successful"))
       }).catch((err) => {
+        console.log('err',err)
         dispatch(turnOffLoading())
         message.error(t("Upload failed"))
       });
@@ -391,23 +393,13 @@ export default function AdminListUser() {
   let handleFileChange = (e) => {
     let file = e.target.files[0];
     
-    // Check if file is of allowed type
-    const allowedTypes = ['image/png', 'image/jpeg', 'image/gif'];
-    if (file && allowedTypes.includes(file.type)) {
-      formik.setFieldValue("hinhAnh", file);
-      
-      // Create a preview URL for the selected image
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      // If file type is not allowed, clear the file input and show an error message
-      e.target.value = '';
-      setPreviewImage(null);
-      formik.setFieldValue("hinhAnh", {});
-      message.error(t('Please select a PNG, JPG, or GIF image file.'));
+    if (file.type === "image/png" || file.type === "image/jpeg" || file.type === "image/gif" || file.type === "image/jpg") {
+      let reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = (e) => {
+        setPreviewImage(e.target.result)
+      }
+      formik.setFieldValue("hinhAnh", file)
     }
   }
 
