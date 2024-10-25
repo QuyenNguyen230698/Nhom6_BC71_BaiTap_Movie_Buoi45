@@ -108,7 +108,7 @@ export default function ListMoviePage() {
   };
   //#endregion
   return (
-    <div data-aos="fade-up" data-aos-delay="800" className="container-listMovie grid grid-cols-4 gap-6 pt-4">
+    <div data-aos="fade-up" data-aos-delay="700" className="container-listMovie grid grid-cols-4 gap-6 pt-4">
       {renderListMovie()}
       {/* Modal show trailer */}
       <Modal

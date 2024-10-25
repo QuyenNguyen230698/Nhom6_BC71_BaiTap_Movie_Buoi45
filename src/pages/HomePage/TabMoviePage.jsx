@@ -124,7 +124,7 @@ export default function TabMoviePage() {
   //#endregion
 
   return (
-    <div data-aos="fade-up" data-aos-delay="1200" id="tabMovie" className="container-tabMovie pt-20 pb-10">
+    <div data-aos="fade-up" data-aos-delay="700" id="tabMovie" className="container-tabMovie pt-20 pb-10">
       {/* Show movie schedule */}
       <Tabs
         defaultActiveKey="1"

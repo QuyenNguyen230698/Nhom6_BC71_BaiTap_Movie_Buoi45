@@ -22,7 +22,7 @@ export default function SearchPage() {
     AOS.init({
       offset: 400,
       delay: 0,
-      duration: 1000,
+      duration: 500,
       easing: 'ease',
       once: true,
     });
@@ -144,7 +144,7 @@ let bookingTicket = () => {
   };
 
   return (
-    <div data-aos="fade-up" data-aos-delay="500" id="listMovie" className="container-listMovie pt-10">
+    <div data-aos="fade-up" data-aos-delay="500" id="listMovie" className="container-listMovie pt-5">
       <div className="grid grid-cols-4 gap-4 pt-4">
         {/* Select Movie */}
         <form className="w-full">

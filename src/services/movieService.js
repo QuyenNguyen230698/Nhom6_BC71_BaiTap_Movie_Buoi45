@@ -44,7 +44,18 @@ export let adminService = {
         return http.delete(`/api/QuanLyPhim/XoaPhim?MaPhim=${maPhim}`)
     },
     addMovie: (formData) => {
-        return http.post(`/api/QuanLyPhim/ThemPhimUploadHinh`,formData)
+        return http.post(`/api/QuanLyPhim/ThemPhimUploadHinh`,formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          })
     },
+    editMovie: (formData) => {
+        return http.post(`/api/QuanLyPhim/CapNhatPhimUpload`,formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+    }
 }
 //#endregion

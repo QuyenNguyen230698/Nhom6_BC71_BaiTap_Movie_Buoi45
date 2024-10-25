@@ -16,6 +16,7 @@ import {
   Switch,
   DatePicker,
   InputNumber,
+  TimePicker,
 } from "antd";
 import { useDispatch } from "react-redux";
 import { turnOffLoading } from "../reduxMovie/spinnerSlice";
@@ -31,8 +32,9 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons";
-import { useFormik } from 'formik';
+import { useFormik } from "formik";
 import moment from "moment";
+import Search from "antd/es/transfer/search";
 
 export default function AdminListUser() {
   let dispatch = useDispatch();
@@ -297,6 +299,8 @@ export default function AdminListUser() {
             >
               {t("Delete")}
             </button>
+            <button onClick={() => createShowModal(user)}
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">{t('CreateShow')}</button>
           </div>
         );
       },
@@ -317,9 +321,198 @@ export default function AdminListUser() {
   };
   //#endregion
 
+  //#region Upload movie
+  const formik = useFormik({
+    initialValues: {
+      tenPhim: "",
+      trailer: "",
+      moTa: "",
+      ngayKhoiChieu: "",
+      dangChieu: false,
+      sapChieu: false,
+      hot: false,
+      danhGia: 0,
+      hinhAnh: {},
+    },
+    onSubmit: (values) => {
+      values.maNhom = "GP01";
+      console.log("Form submitted with values:", values);
+      let formData = new FormData();
+      for (let key in values) {
+        if (key !== "hinhAnh") {
+          formData.append(key, values[key]);
+        } else {
+          formData.append("File", values.hinhAnh, values.hinhAnh.name);
+        }
+      }
+
+      adminService
+        .addMovie(formData)
+        .then((result) => {
+          console.log("result", result);
+          fetchListMovie();
+          message.success(t("Upload successful"));
+        })
+        .catch((err) => {
+          console.log("err", err);
+          dispatch(turnOffLoading());
+          message.error(t("Upload failed"));
+        });
+    },
+  });
+  let handleDateChange = (date) => {
+    let ngayKhoiChieu = moment(date).format("DD/MM/YYYY");
+    formik.setFieldValue("ngayKhoiChieu", ngayKhoiChieu);
+  };
+  let handleSwitchChange = (name) => {
+    return (checked) => {
+      formik.setFieldValue(name, checked);
+    };
+  };
+  let handleFileChange = (e) => {
+    let file = e.target.files[0];
+
+    if (
+      file.type === "image/png" ||
+      file.type === "image/jpeg" ||
+      file.type === "image/gif" ||
+      file.type === "image/jpg"
+    ) {
+      if (file.size <= 1024 * 1024) {
+        // Check if file size is less than or equal to 1 MB
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (e) => {
+          setPreviewImage(e.target.result);
+        };
+        formik.setFieldValue("hinhAnh", file);
+      } else {
+        message.error(t("Image size must be less than 1 MB"));
+        e.target.value = null; // Reset the file input
+      }
+    } else {
+      message.error(
+        t("Please upload a valid image file (PNG, JPEG, GIF, or JPG)")
+      );
+      e.target.value = null; // Reset the file input
+    }
+  };
+  //#endregion
+
+  //#region edit movie
+  const [isEditMovieModalVisible, setIsEditMovieModalVisible] = useState(false);
+  const [Img, setImg] = useState("");
+  const [editForm] = Form.useForm();
+
   let renderEditMovie = (movie) => {
+    setIsEditMovieModalVisible(true);
+    editForm.setFieldsValue(movie);
     console.log("🚀 ~ renderEditMovie ~ movie:", movie);
   };
+
+  const editFormik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      maPhim: editForm.getFieldValue("maPhim") || "",
+      tenPhim: editForm.getFieldValue("tenPhim") || "",
+      trailer: editForm.getFieldValue("trailer") || "",
+      moTa: editForm.getFieldValue("moTa") || "",
+      ngayKhoiChieu: editForm.getFieldValue("ngayKhoiChieu") || "",
+      dangChieu: editForm.getFieldValue("dangChieu") || false,
+      sapChieu: editForm.getFieldValue("sapChieu") || false,
+      hot: editForm.getFieldValue("hot") || false,
+      danhGia: editForm.getFieldValue("danhGia") || 0,
+      hinhAnh: null,
+    },
+    onSubmit: (values) => {
+      values.maNhom = "GP01";
+      console.log("Form submitted with values:", values);
+      let formData = new FormData();
+      for (let key in values) {
+        if (key !== "hinhAnh") {
+          formData.append(key, values[key]);
+        } else {
+          if (values.hinhAnh !== null) {
+            formData.append("File", values.hinhAnh, values.hinhAnh.name);
+          }
+        }
+      }
+      adminService
+        .editMovie(formData)
+        .then((result) => {
+          fetchListMovie();
+          setIsEditMovieModalVisible(false);
+          message.success(t("Update successful"));
+          console.log(result.data.message);
+        })
+        .catch((err) => {
+          console.log("err", err.request.response);
+          dispatch(turnOffLoading());
+          message.error(t("Update failed"));
+        });
+    },
+  });
+  let handleDateChangeMovie = (date) => {
+    let ngayKhoiChieu = moment(date).format("DD/MM/YYYY");
+    editFormik.setFieldValue("ngayKhoiChieu", ngayKhoiChieu);
+  };
+  let handleFileChangeMovie = (e) => {
+    let file = e.target.files[0];
+
+    if (
+      file.type === "image/png" ||
+      file.type === "image/jpeg" ||
+      file.type === "image/gif" ||
+      file.type === "image/jpg"
+    ) {
+      if (file.size <= 1024 * 1024) {
+        // Check if file size is less than or equal to 1 MB
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (e) => {
+          setImg(e.target.result);
+        };
+        editFormik.setFieldValue("hinhAnh", file);
+      } else {
+        message.error(t("Image size must be less than 1 MB"));
+        e.target.value = null; // Reset the file input
+      }
+    } else {
+      message.error(
+        t("Please upload a valid image file (PNG, JPEG, GIF, or JPG)")
+      );
+      e.target.value = null; // Reset the file input
+    }
+  };
+  //#endregion
+
+  //#region create show
+  const [isCreateShowModalVisible, setIsCreateShowModalVisible] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [theaterSystems, setTheaterSystems] = useState([]);
+  const [theaters, setTheaters] = useState([]);
+
+  let createShowModal = (movie) => {
+    setSelectedMovie(movie);
+    setIsCreateShowModalVisible(true);
+    // Fetch theater systems here
+    // For example: fetchTheaterSystems();
+  }
+
+  const handleCreateShowOk = () => {
+    // Handle form submission
+    setIsCreateShowModalVisible(false);
+  };
+
+  const handleCreateShowCancel = () => {
+    setIsCreateShowModalVisible(false);
+  };
+
+  const handleTheaterSystemChange = (value) => {
+    // Fetch theaters based on selected theater system
+    // For example: fetchTheaters(value);
+  };
+  //#endregion
 
   const menuItems = [
     {
@@ -339,73 +532,12 @@ export default function AdminListUser() {
       icon: <CloudUploadOutlined />,
       label: t("Upload Movie"),
       onClick: () => setActiveContent("uploadMovie"),
-    }
+    },
   ];
-
-  const formik = useFormik({
-    initialValues: {
-      tenPhim: '',
-      trailer: '',
-      moTa: '',
-      ngayKhoiChieu: '',
-      dangChieu: false,
-      sapChieu: false,
-      hot: false,
-      danhGia: 0,
-      hinhAnh: {},
-    },
-    onSubmit: (values) => {
-      values.maNhom = "GP01";
-      console.log('Form submitted with values:', values);
-      let formData = new FormData()
-      for (let key in values) {
-        if (key !== "hinhAnh") {
-          formData.append(key, values[key])
-        } else {
-          formData.append("File", values.hinhAnh, values.hinhAnh.name)
-        }
-      }
-
-      adminService.addMovie(formData)
-      .then((result) => {
-        console.log('result',result)
-        fetchListMovie()
-        message.success(t("Upload successful"))
-      }).catch((err) => {
-        console.log('err',err)
-        dispatch(turnOffLoading())
-        message.error(t("Upload failed"))
-      });
-    },
-  });
-
-  let handleDateChange = (date) => {
-    let ngayKhoiChieu = moment(date).format("DD/MM/YYYY")
-    formik.setFieldValue("ngayKhoiChieu", ngayKhoiChieu)
-  }
-
-  let handleSwitchChange = (name) => {
-    return (checked) => {
-      formik.setFieldValue(name, checked);
-    };
-  };
-
-  let handleFileChange = (e) => {
-    let file = e.target.files[0];
-    
-    if (file.type === "image/png" || file.type === "image/jpeg" || file.type === "image/gif" || file.type === "image/jpg") {
-      let reader = new FileReader()
-      reader.readAsDataURL(file)
-      reader.onload = (e) => {
-        setPreviewImage(e.target.result)
-      }
-      formik.setFieldValue("hinhAnh", file)
-    }
-  }
 
   return (
     <div data-aos="fade-up" data-aos-delay="500" className="pt-20">
-      <Layout>
+      <Layout style={{ minHeight: "100vh" }}>
         <Sider trigger={null} collapsible collapsed={collapsed}>
           <div className="demo-logo-vertical" />
           <Menu
@@ -443,21 +575,23 @@ export default function AdminListUser() {
             }}
           >
             {activeContent === "userTable" && (
-              <Table
-                className="w-full"
-                dataSource={listUser}
-                columns={columns}
-                rowKey="taiKhoan"
-                pagination={{
-                  pageSize: 10,
-                  position: ["bottomCenter"],
-                  className: "py-4",
-                }}
-              />
+              <>
+                <Table
+                  className="w-full"
+                  dataSource={listUser}
+                  columns={columns}
+                  rowKey="taiKhoan"
+                  pagination={{
+                    pageSize: 10,
+                    position: ["bottomCenter"],
+                    className: "py-4",
+                  }}
+                />
+              </>
             )}
             {activeContent === "movieManagement" && (
               <Table
-                className="w-full"
+                className="w-full h-full"
                 dataSource={listMovie}
                 columns={columnsMovie}
                 rowKey="taiKhoan"
@@ -471,10 +605,7 @@ export default function AdminListUser() {
             {activeContent === "uploadMovie" && (
               <div className="p-4">
                 <h2 className="text-2xl font-bold mb-4">{t("Upload Movie")}</h2>
-                <Form
-                  layout="vertical"
-                  onFinish={formik.handleSubmit}
-                >
+                <Form layout="vertical" onFinish={formik.handleSubmit}>
                   <Form.Item label={t("Movie Name")} required>
                     <Input
                       name="tenPhim"
@@ -501,7 +632,8 @@ export default function AdminListUser() {
 
                   <Form.Item label={t("Release Date")} required>
                     <DatePicker
-                      name="ngayKhoiChieu" format={"DD/MM/YYYY"}
+                      name="ngayKhoiChieu"
+                      format={"DD/MM/YYYY"}
                       onChange={handleDateChange}
                     />
                   </Form.Item>
@@ -535,7 +667,9 @@ export default function AdminListUser() {
                       name="danhGia"
                       min={0}
                       max={10}
-                      onChange={(value) => formik.setFieldValue('danhGia', value)}
+                      onChange={(value) =>
+                        formik.setFieldValue("danhGia", value)
+                      }
                       value={formik.values.danhGia}
                     />
                   </Form.Item>
@@ -568,7 +702,7 @@ export default function AdminListUser() {
           </Content>
         </Layout>
       </Layout>
-      {/* add modal */}
+      {/* add user modal */}
       <Modal
         title={t("Add account")}
         open={isRegisterModalOpen}
@@ -660,7 +794,7 @@ export default function AdminListUser() {
           </Form.Item>
         </Form>
       </Modal>
-      {/* edit modal */}
+      {/* edit user modal */}
       <Modal
         title="Update User Info"
         visible={isModalVisible}
@@ -730,6 +864,163 @@ export default function AdminListUser() {
             <Button type="primary" htmlType="submit">
               Update user info
             </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
+      {/* edit movie modal */}
+      <Modal
+        title={t("Edit Movie")}
+        visible={isEditMovieModalVisible}
+        onCancel={() => setIsEditMovieModalVisible(false)}
+        footer={null}
+        width={800}
+      >
+        <Form
+          form={editForm}
+          layout="vertical"
+          onFinish={editFormik.handleSubmit}
+          className="grid grid-cols-2 gap-4"
+        >
+          <Form.Item label={t("Movie Name")} required>
+            <Input
+              name="tenPhim"
+              onChange={editFormik.handleChange}
+              value={editFormik.values.tenPhim}
+            />
+          </Form.Item>
+
+          <Form.Item label={t("Trailer")} required>
+            <Input
+              name="trailer"
+              onChange={editFormik.handleChange}
+              value={editFormik.values.trailer}
+            />
+          </Form.Item>
+
+          <Form.Item label={t("Description")} required>
+            <Input.TextArea
+              name="moTa"
+              onChange={editFormik.handleChange}
+              value={editFormik.values.moTa}
+            />
+          </Form.Item>
+
+          <Form.Item label={t("Release Date")} required>
+            <DatePicker
+              name="ngayKhoiChieu"
+              format={"DD/MM/YYYY"}
+              onChange={handleDateChangeMovie}
+            />
+          </Form.Item>
+
+          <Form.Item label={t("Now Showing")}>
+            <Switch
+              name="dangChieu"
+              onChange={(checked) =>
+                editFormik.setFieldValue("dangChieu", checked)
+              }
+              checked={editFormik.values.dangChieu}
+            />
+          </Form.Item>
+
+          <Form.Item label={t("Coming Soon")}>
+            <Switch
+              name="sapChieu"
+              onChange={(checked) =>
+                editFormik.setFieldValue("sapChieu", checked)
+              }
+              checked={editFormik.values.sapChieu}
+            />
+          </Form.Item>
+
+          <Form.Item label={t("Hot")}>
+            <Switch
+              name="hot"
+              onChange={(checked) => editFormik.setFieldValue("hot", checked)}
+              checked={editFormik.values.hot}
+            />
+          </Form.Item>
+
+          <Form.Item label={t("Rating")} required>
+            <InputNumber
+              name="danhGia"
+              min={0}
+              max={10}
+              onChange={(value) => editFormik.setFieldValue("danhGia", value)}
+              value={editFormik.values.danhGia}
+            />
+          </Form.Item>
+
+          <Form.Item label={t("Movie Poster")} className="col-span-2">
+            <input
+              type="file"
+              onChange={handleFileChangeMovie}
+              className="mb-2"
+            />
+            {Img && (
+              <div className="mt-2">
+                <img
+                  src={Img}
+                  alt="Movie Poster Preview"
+                  className="max-w-xs max-h-64 object-contain rounded-lg shadow-md"
+                />
+              </div>
+            )}
+          </Form.Item>
+
+          <Form.Item className="col-span-2">
+            <Button type="primary" htmlType="submit" block>
+              {t("Update Movie")}
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
+      {/* create show and ticket */}
+      <Modal
+        title={t("Create Show")}
+        visible={isCreateShowModalVisible}
+        onOk={handleCreateShowOk}
+        onCancel={handleCreateShowCancel}
+      >
+        <Form layout="vertical">
+          <Form.Item label={t("Theater System")} required>
+            <Select
+              placeholder={t("Select theater system")}
+              onChange={handleTheaterSystemChange}
+            >
+              {theaterSystems.map(system => (
+                <Select.Option key={system.id} value={system.id}>
+                  {system.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          <Form.Item label={t("Theater")} required>
+            <Select placeholder={t("Select theater")}>
+              {theaters.map(theater => (
+                <Select.Option key={theater.id} value={theater.id}>
+                  {theater.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          <Form.Item label={t("Show Date")} required>
+            <DatePicker style={{ width: '100%' }} />
+          </Form.Item>
+
+          <Form.Item label={t("Show Time")} required>
+            <TimePicker style={{ width: '100%' }} format="HH:mm" />
+          </Form.Item>
+
+          <Form.Item label={t("Ticket Price")} required>
+            <InputNumber
+              min={0}
+              style={{ width: '100%' }}
+              formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              parser={value => value.replace(/\$\s?|(,*)/g, '')}
+            />
           </Form.Item>
         </Form>
       </Modal>
