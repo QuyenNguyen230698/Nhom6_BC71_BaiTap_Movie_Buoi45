@@ -120,7 +120,6 @@ export default function AdminListUser() {
   //#region update user
   const handleSubmit = (values) => {
     values.maNhom = "GP00";
-    console.log("Submitted values:", values);
     adminService
       .updateUser(values)
       .then((result) => {
@@ -163,7 +162,6 @@ export default function AdminListUser() {
   };
   const onFinishRegister = (values) => {
     let newUser = { ...values, maNhom: "GP00" };
-    console.log("🚀 ~ onFinishRegister ~ newUser:", newUser);
     http
       .post("/api/QuanLyNguoiDung/DangKy", newUser)
       .then((result) => {
@@ -178,8 +176,6 @@ export default function AdminListUser() {
   };
 
   const showModalEdit = (user) => {
-    console.log("🚀 ~ showModalEdit ~ user:", user);
-
     setIsModalVisible(true);
     form.setFieldsValue(user);
   };
@@ -316,7 +312,6 @@ export default function AdminListUser() {
   ];
 
   let deleteMovie = (movie) => {
-    console.log("🚀 ~ deleteMovie ~ movie:", movie);
     adminService
       .deleteMovie(movie)
       .then((result) => {
@@ -344,7 +339,6 @@ export default function AdminListUser() {
     },
     onSubmit: (values) => {
       values.maNhom = "GP01";
-      console.log("Form submitted with values:", values);
       let formData = new FormData();
       for (let key in values) {
         if (key !== "hinhAnh") {
@@ -415,7 +409,6 @@ export default function AdminListUser() {
   let renderEditMovie = (movie) => {
     setIsEditMovieModalVisible(true);
     editForm.setFieldsValue(movie);
-    console.log("🚀 ~ renderEditMovie ~ movie:", movie);
   };
 
   const editFormik = useFormik({
@@ -434,7 +427,6 @@ export default function AdminListUser() {
     },
     onSubmit: (values) => {
       values.maNhom = "GP01";
-      console.log("Form submitted with values:", values);
       let formData = new FormData();
       for (let key in values) {
         if (key !== "hinhAnh") {
@@ -451,7 +443,6 @@ export default function AdminListUser() {
           fetchListMovie();
           setIsEditMovieModalVisible(false);
           message.success(t("Update successful"));
-          console.log(result.data.message);
         })
         .catch((err) => {
           console.log("err", err.request.response);
@@ -516,7 +507,6 @@ export default function AdminListUser() {
         let result = await adminService.addShow(values);
         message.success(t("Create show successful"));
       } catch (error) {
-        console.log("error", error);
         dispatch(turnOffLoading());
         message.error(t("Create show failed"));
       }
@@ -754,7 +744,7 @@ export default function AdminListUser() {
         footer={null}
       >
         <Form
-          name="register"
+          name={t("Register")}
           labelCol={{
             span: 8,
           }}
@@ -770,7 +760,7 @@ export default function AdminListUser() {
           <Form.Item
             label={t("Account")}
             name="taiKhoan"
-            rules={[{ required: true, message: "Please input your username!" }]}
+            rules={[{ required: true, message: t("Please input your username!") }]}
           >
             <Input />
           </Form.Item>
@@ -778,7 +768,7 @@ export default function AdminListUser() {
           <Form.Item
             label={t("Password")}
             name="matKhau"
-            rules={[{ required: true, message: "Please input your password!" }]}
+            rules={[{ required: true, message: t("Please input your password!") }]}
           >
             <Input.Password />
           </Form.Item>
@@ -787,7 +777,7 @@ export default function AdminListUser() {
             label={t("Full name")}
             name="hoTen"
             rules={[
-              { required: true, message: "Please input your full name!" },
+              { required: true, message: t("Please input your full name!") },
             ]}
           >
             <Input />
@@ -796,7 +786,7 @@ export default function AdminListUser() {
           <Form.Item
             label={t("Email")}
             name="email"
-            rules={[{ required: true, message: "Please input your email!" }]}
+            rules={[{ required: true, message: t("Please input your email!") }]}
           >
             <Input />
           </Form.Item>
@@ -805,7 +795,7 @@ export default function AdminListUser() {
             label={t("Phone number")}
             name="soDT"
             rules={[
-              { required: true, message: "Please input your phone number!" },
+              { required: true, message: t("Please input your phone number!") },
             ]}
           >
             <Input />
@@ -839,7 +829,7 @@ export default function AdminListUser() {
       </Modal>
       {/* edit user modal */}
       <Modal
-        title="Update User Info"
+        title={t("Update User Info")}
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -847,37 +837,37 @@ export default function AdminListUser() {
       >
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Form.Item
-            label="Account"
+            label={t("Account")}
             name="taiKhoan"
-            rules={[{ required: true, message: "Please enter your account!" }]}
+            rules={[{ required: true, message: t("Please enter your account!") }]}
           >
-            <Input placeholder="Enter your account" disabled />
+            <Input placeholder={t("Enter your account")} disabled />
           </Form.Item>
 
           <Form.Item
-            label="Password"
+            label={t("Password")}
             name="matKhau"
-            rules={[{ required: true, message: "Please enter your password!" }]}
+            rules={[{ required: true, message: t("Please enter your password!") }]}
           >
-            <Input.Password placeholder="Enter your password" />
+            <Input.Password placeholder={t("Enter your password")} />
           </Form.Item>
 
           <Form.Item
             label="Email"
             name="email"
-            rules={[{ required: true, message: "Please enter your email!" }]}
+            rules={[{ required: true, message: t("Please enter your email!") }]}
           >
-            <Input placeholder="Enter your email" />
+            <Input placeholder={t("Enter your email")} />
           </Form.Item>
 
           <Form.Item
-            label="Phone number"
+            label={t("Phone number")}
             name="soDt"
             rules={[
-              { required: true, message: "Please enter your phone number!" },
+              { required: true, message: t("Please enter your phone number!") },
             ]}
           >
-            <Input placeholder="Enter your phone number" />
+            <Input placeholder={t("Enter your phone number")} />
           </Form.Item>
 
           <Form.Item
@@ -894,18 +884,18 @@ export default function AdminListUser() {
           </Form.Item>
 
           <Form.Item
-            label="Full name"
+            label={t("Full name")}
             name="hoTen"
             rules={[
-              { required: true, message: "Please enter your full name!" },
+              { required: true, message: t("Please enter your full name!") },
             ]}
           >
-            <Input placeholder="Enter your full name" />
+            <Input placeholder={t("Enter your full name")} />
           </Form.Item>
 
           <Form.Item className="h-full w-full flex justify-center items-center">
             <Button type="primary" htmlType="submit">
-              Update user info
+              {t("Update user info")}
             </Button>
           </Form.Item>
         </Form>
