@@ -64,11 +64,7 @@ export let adminService = {
         return http.get(`/api/QuanLyRap/LayThongTinCumRapTheoHeThong?maHeThongRap=${maHeThongRap}`)
     },
     addShow: (formData) => {
-        return http.post("/api/QuanLyRap/TaoLichChieu", formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          })
+        return http.post("/api/QuanLyDatVe/TaoLichChieu", formData)
     }
 }
 //#endregion
