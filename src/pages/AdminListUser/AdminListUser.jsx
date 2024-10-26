@@ -15,9 +15,7 @@ import {
   Switch,
   DatePicker,
   InputNumber,
-  TimePicker,
   Spin,
-  Space,
 } from "antd";
 import { useDispatch } from "react-redux";
 import { turnOffLoading } from "../reduxMovie/spinnerSlice";
@@ -516,7 +514,7 @@ export default function AdminListUser() {
       console.log("values", values);
       try {
         let result = await adminService.addShow(values);
-        console.log("result", result);
+        message.success(t("Create show successful"));
       } catch (error) {
         console.log("error", error);
         dispatch(turnOffLoading());
