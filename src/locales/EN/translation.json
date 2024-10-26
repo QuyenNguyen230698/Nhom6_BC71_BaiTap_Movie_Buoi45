@@ -120,5 +120,9 @@
     "movieManagement":"Movie Management",
     "uploadMovie":"Upload Movie",
     "User Management":"User Management",
-    "Movie Management":"Movie Management"
+    "Movie Management":"Movie Management",
+    "Partner":"Partner",
+    "Usage Agreement":"Usage Agreement",
+    "Privacy Policy":"Privacy Policy",
+    "Brand Guidelines":"Brand Guidelines"
 }
