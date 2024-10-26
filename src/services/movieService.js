@@ -56,6 +56,19 @@ export let adminService = {
               'Content-Type': 'multipart/form-data',
             },
           })
+    },
+    getTheaterSystem: () => {
+        return http.get("/api/QuanLyRap/LayThongTinHeThongRap")
+    },
+    getTheater: (maHeThongRap) => {
+        return http.get(`/api/QuanLyRap/LayThongTinCumRapTheoHeThong?maHeThongRap=${maHeThongRap}`)
+    },
+    addShow: (formData) => {
+        return http.post("/api/QuanLyRap/TaoLichChieu", formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          })
     }
 }
 //#endregion

@@ -1,8 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { adminService, movieService } from "../../services/movieService";
-import {Table,Tag,message,Button,Modal,Form,Input,Select,Layout,Menu,theme,Switch,DatePicker,InputNumber,TimePicker} from "antd";
+import {
+  Table,
+  Tag,
+  message,
+  Button,
+  Modal,
+  Form,
+  Input,
+  Select,
+  Layout,
+  Menu,
+  theme,
+  Switch,
+  DatePicker,
+  InputNumber,
+  TimePicker,
+  Spin,
+  Space,
+} from "antd";
 import { useDispatch } from "react-redux";
-import { turnOffLoading } from "../reduxMovie/spinnerSlice";
+import { turnOffLoading, turnOnloading } from "../reduxMovie/spinnerSlice";
 import { useNavigate } from "react-router-dom";
 import AOS from "aos";
 import { useTranslation } from "react-i18next";
@@ -281,8 +299,12 @@ export default function AdminListUser() {
             >
               {t("Delete")}
             </button>
-            <button onClick={() => createShowModal(user)}
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">{t('CreateShow')}</button>
+            <button
+              onClick={() => createShowModal(user.maPhim)}
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+            >
+              {t("CreateShow")}
+            </button>
           </div>
         );
       },
@@ -469,30 +491,74 @@ export default function AdminListUser() {
   //#endregion
 
   //#region create show
-  const [isCreateShowModalVisible, setIsCreateShowModalVisible] = useState(false);
+  const [isCreateShowModalVisible, setIsCreateShowModalVisible] =
+    useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [theaterSystems, setTheaterSystems] = useState([]);
   const [theaters, setTheaters] = useState([]);
+  const [isLoadingTheaters, setIsLoadingTheaters] = useState(false);
+
+  useEffect(async () => {
+    try {
+      let result = await adminService.getTheaterSystem();
+      setTheaterSystems(result.data.content);
+    } catch (error) {
+      dispatch(turnOffLoading());
+      message.error(t("Get theater system failed"));
+    }
+  }, []);
+
+  const showFormik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      maPhim: selectedMovie,
+      ngayChieuGioChieu: "",
+      maRap: "",
+      giaVe: "",
+    },
+    onSubmit: async (values) => {
+      console.log("values", values);
+      try {
+        let result = await adminService.addShow(values);
+        console.log("result", result);
+      } catch (error) {
+        console.log("error", error);
+        dispatch(turnOffLoading());
+        message.error(t("Create show failed"));
+      }
+    },
+  });
 
   let createShowModal = (movie) => {
     setSelectedMovie(movie);
     setIsCreateShowModalVisible(true);
-    // Fetch theater systems here
-    // For example: fetchTheaterSystems();
-  }
-
-  const handleCreateShowOk = () => {
-    // Handle form submission
-    setIsCreateShowModalVisible(false);
+    showFormik.setFieldValue("maPhim", selectedMovie);
   };
 
   const handleCreateShowCancel = () => {
     setIsCreateShowModalVisible(false);
   };
 
-  const handleTheaterSystemChange = (value) => {
-    // Fetch theaters based on selected theater system
-    // For example: fetchTheaters(value);
+  const handleTheaterSystemChange = async (value) => {
+    setIsLoadingTheaters(true);
+    try {
+      let result = await adminService.getTheater(value);
+      setTheaters(result.data.content);
+    } catch (error) {
+      dispatch(turnOffLoading());
+      message.error(t("Get theater failed"));
+    } finally {
+      setIsLoadingTheaters(false);
+    }
+  };
+  const handleTheaterChange = (value) => {
+    showFormik.setFieldValue("maRap", value);
+  };
+  const handleDateTimeChange = (value) => {
+    showFormik.setFieldValue("ngayChieuGioChieu", moment(value).format('DD/MM/YYYY HH:mm:ss'));
+  };
+  const handleTicketPriceChange = (value) => {
+    showFormik.setFieldValue("giaVe", value);
   };
   //#endregion
 
@@ -962,48 +1028,58 @@ export default function AdminListUser() {
       <Modal
         title={t("Create Show")}
         visible={isCreateShowModalVisible}
-        onOk={handleCreateShowOk}
         onCancel={handleCreateShowCancel}
+        footer={null}
       >
-        <Form layout="vertical">
+        <Form layout="vertical" onFinish={showFormik.handleSubmit}>
           <Form.Item label={t("Theater System")} required>
             <Select
               placeholder={t("Select theater system")}
               onChange={handleTheaterSystemChange}
             >
-              {theaterSystems.map(system => (
-                <Select.Option key={system.id} value={system.id}>
-                  {system.name}
+              {theaterSystems.map((system) => (
+                <Select.Option key={system.id} value={system.maHeThongRap}>
+                  {system.maHeThongRap}
                 </Select.Option>
               ))}
             </Select>
           </Form.Item>
 
           <Form.Item label={t("Theater")} required>
-            <Select placeholder={t("Select theater")}>
-              {theaters.map(theater => (
-                <Select.Option key={theater.id} value={theater.id}>
-                  {theater.name}
-                </Select.Option>
-              ))}
-            </Select>
+            {isLoadingTheaters ? (
+              <Spin />
+            ) : (
+              <Select
+                placeholder={t("Select theater")}
+                onChange={handleTheaterChange}
+              >
+                {theaters.map((theater) => (
+                  <Select.Option key={theater.id} value={theater.maCumRap}>
+                    {theater.tenCumRap}
+                  </Select.Option>
+                ))}
+              </Select>
+            )}
           </Form.Item>
 
-          <Form.Item label={t("Show Date")} required>
-            <DatePicker style={{ width: '100%' }} />
+          <Form.Item label={t("Show Date and Time")} required>
+             <DatePicker showTime onChange={handleDateTimeChange} />
           </Form.Item>
 
-          <Form.Item label={t("Show Time")} required>
-            <TimePicker style={{ width: '100%' }} format="HH:mm" />
-          </Form.Item>
-
-          <Form.Item label={t("Ticket Price")} required>
+          <Form.Item label={t("Ticket Price")}>
             <InputNumber
-              min={0}
-              style={{ width: '100%' }}
-              formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-              parser={value => value.replace(/\$\s?|(,*)/g, '')}
+              min={75000}
+              max={120000}
+              step={5000}
+              style={{ width: "100%" }}
+              onChange={handleTicketPriceChange}
             />
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" block>
+              {t("Add Show of Movie")}
+            </Button>
           </Form.Item>
         </Form>
       </Modal>
