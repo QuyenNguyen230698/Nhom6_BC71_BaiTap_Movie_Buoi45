@@ -20,7 +20,7 @@ import {
   Space,
 } from "antd";
 import { useDispatch } from "react-redux";
-import { turnOffLoading, turnOnloading } from "../reduxMovie/spinnerSlice";
+import { turnOffLoading } from "../reduxMovie/spinnerSlice";
 import { useNavigate } from "react-router-dom";
 import AOS from "aos";
 import { useTranslation } from "react-i18next";
@@ -39,7 +39,7 @@ import moment from "moment";
 export default function AdminListUser() {
   let dispatch = useDispatch();
   let navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -48,7 +48,6 @@ export default function AdminListUser() {
   const [activeContent, setActiveContent] = useState("userTable");
   const [form] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
 
   // AOS animation
@@ -94,6 +93,13 @@ export default function AdminListUser() {
     } else {
       fetchListUser();
     }
+    adminService.getTheaterSystem()
+    .then((result) => {
+      setTheaterSystems(result.data.content);
+    }).catch((err) => {
+      dispatch(turnOffLoading());
+      message.error(t("Get theater system failed"));
+    });
   }, []);
   //#endregion
 
@@ -175,7 +181,7 @@ export default function AdminListUser() {
 
   const showModalEdit = (user) => {
     console.log("🚀 ~ showModalEdit ~ user:", user);
-    setSelectedUser(user);
+
     setIsModalVisible(true);
     form.setFieldsValue(user);
   };
@@ -497,16 +503,6 @@ export default function AdminListUser() {
   const [theaterSystems, setTheaterSystems] = useState([]);
   const [theaters, setTheaters] = useState([]);
   const [isLoadingTheaters, setIsLoadingTheaters] = useState(false);
-
-  useEffect(async () => {
-    try {
-      let result = await adminService.getTheaterSystem();
-      setTheaterSystems(result.data.content);
-    } catch (error) {
-      dispatch(turnOffLoading());
-      message.error(t("Get theater system failed"));
-    }
-  }, []);
 
   const showFormik = useFormik({
     enableReinitialize: true,

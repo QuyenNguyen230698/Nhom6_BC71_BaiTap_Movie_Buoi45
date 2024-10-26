@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Switch, Button, Modal, Checkbox, Form, Input, message, Select } from "antd";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { http } from "../services/config";
 import { setUserAction } from "../pages/reduxMovie/userSlice";
@@ -11,7 +11,6 @@ import { useTranslation } from "react-i18next";
 
 export default function Header() {
   let user = useSelector((state) => state.userSlice.dataLogin);
-  let navigate = useNavigate();
   let dispatch = useDispatch();
 
   // AOS animation
