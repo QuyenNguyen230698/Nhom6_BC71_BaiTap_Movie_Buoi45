@@ -94,7 +94,7 @@ let renderTicket = () => {
   let renderUser = () => {
     let foundUser = userInfo.find((item) => item.taiKhoan == user);
     return foundUser ? (
-      <div className="w-4/5 h-4/5 p-4 bg-white rounded mt-10 mx-auto">
+      <div className="w-4/5 h-full p-4 bg-white rounded mt-10 mx-auto">
         <Form
           form={form}
           layout="vertical"
