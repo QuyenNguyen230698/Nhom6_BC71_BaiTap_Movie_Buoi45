@@ -130,7 +130,7 @@ export default function AdminListUser() {
       })
       .catch((err) => {
         dispatch(turnOffLoading());
-        message.error(t("Update failed"));
+        message.error(t("You can only edit your account"));
       });
   };
   //#endregion
@@ -319,6 +319,7 @@ export default function AdminListUser() {
         message.success(t("Delete successful"));
       })
       .catch((err) => {
+        dispatch(turnOffLoading());
         message.error(t("Delete failed"));
       });
   };
@@ -351,12 +352,10 @@ export default function AdminListUser() {
       adminService
         .addMovie(formData)
         .then((result) => {
-          console.log("result", result);
           fetchListMovie();
           message.success(t("Upload successful"));
         })
         .catch((err) => {
-          console.log("err", err);
           dispatch(turnOffLoading());
           message.error(t("Upload failed"));
         });

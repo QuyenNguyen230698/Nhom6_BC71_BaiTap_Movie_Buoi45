@@ -5,6 +5,8 @@ import { Modal } from "antd";
 import AOS from 'aos';
 import {useTranslation} from 'react-i18next';
 import 'aos/dist/aos.css';
+import { useDispatch } from "react-redux";
+import { turnOffLoading } from "../reduxMovie/spinnerSlice";
 
 export default function ListMoviePage() {
   const { t, i18n } = useTranslation();
@@ -14,7 +16,7 @@ export default function ListMoviePage() {
   const [isModalVisible, setIsModalVisible] = useState(false);
    // Save URL video
   const [videoUrl, setVideoUrl] = useState("");
-
+  const dispatch = useDispatch();
   // AOS animation
   useEffect(() => {
     AOS.init({
@@ -34,7 +36,9 @@ export default function ListMoviePage() {
       .then((result) => {
         setlistMovie(result.data.content);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        dispatch(turnOffLoading());
+      });
   }, []);
   //#endregion
 

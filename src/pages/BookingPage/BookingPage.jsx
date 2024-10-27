@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { movieService } from '../../services/movieService';
 import { message } from 'antd';
 import AOS from 'aos';
 import {useTranslation} from 'react-i18next';
 import 'aos/dist/aos.css';
+import { turnOffLoading } from '../reduxMovie/spinnerSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function BookingPage() {
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [listChair, setlistChair] = useState([]);
     const [movieInfo, setMovieInfo] = useState({});
     let { id } = useParams();
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    let user = useSelector((state) => state.userSlice.dataLogin);
 // AOS animation
     useEffect(() => {
       AOS.init({
@@ -33,6 +38,7 @@ export default function BookingPage() {
           setMovieInfo(result.data.content.thongTinPhim);
         })
         .catch((err) => {
+          dispatch(turnOffLoading());
           console.error("Error fetching seat data", err);
         });
     }, [id]);
@@ -51,6 +57,12 @@ export default function BookingPage() {
     );
 
     const handleBookTicket = () => {
+        if (!user) {
+          message.warning(t("Please login to book tickets"));
+          navigate('/'); 
+          return;
+        }
+
         const bookingInfo = {
             maLichChieu:movieInfo.maLichChieu,
             danhSachVe:selectedSeats.map((ghe) => ({
@@ -58,11 +70,11 @@ export default function BookingPage() {
                 giaVe: ghe.giaVe,
             }))
         };
-        console.log("values:", bookingInfo)
         movieService.bookTicket(bookingInfo)
         .then((result) => {
           message.success(t("Booking successful"));
         }).catch((err) => {
+          dispatch(turnOffLoading());
           message.error(t("Booking failed"));
         })
       };

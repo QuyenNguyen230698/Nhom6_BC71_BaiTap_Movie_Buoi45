@@ -77,7 +77,6 @@ export default function Header() {
     http
       .post("/api/QuanLyNguoiDung/DangNhap", values)
       .then((result) => {
-        console.log("values:", values);
         dispatch(setUserAction(result.data.content));
         let dataUser = JSON.stringify(result.data.content);
         localStorage.setItem("DATA_USER", dataUser);
@@ -278,6 +277,7 @@ export default function Header() {
           >
             <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 bg-navbar">
               <li data-aos="fade-right" data-aos-delay="1000">
+                <NavLink to='/'>
                 <a
                   href="#listMovie"
                   className="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-red-700 md:p-0 md:dark:hover:text-red-500 dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
@@ -285,6 +285,7 @@ export default function Header() {
                 >
                   {t("Showtimes")}
                 </a>
+                </NavLink>
               </li>
               <li data-aos="fade-right" data-aos-delay="500">
                 <a

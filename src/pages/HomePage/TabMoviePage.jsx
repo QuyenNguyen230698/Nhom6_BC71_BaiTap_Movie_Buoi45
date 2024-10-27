@@ -5,6 +5,8 @@ import { movieService } from "../../services/movieService";
 import { NavLink } from "react-router-dom";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { useDispatch } from "react-redux";
+import { turnOffLoading } from "../reduxMovie/spinnerSlice";
 
 //#region create child theater
 const ItemMovie = ({ movie }) => {
@@ -47,6 +49,7 @@ export default function TabMoviePage() {
   };
   // Create state tabMovie
   let [renderTab, setrenderTab] = useState();
+  const dispatch = useDispatch();
 
   // AOS animation
   useEffect(() => {
@@ -67,7 +70,9 @@ export default function TabMoviePage() {
       .then((result) => {
         setrenderTab(result.data.content);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        dispatch(turnOffLoading());
+      });
   }, []);
   //#endregion
 

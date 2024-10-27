@@ -4,6 +4,8 @@ import { NavLink } from "react-router-dom";
 import AOS from 'aos';
 import {useTranslation} from 'react-i18next';
 import 'aos/dist/aos.css';
+import { useDispatch } from "react-redux";
+import { turnOffLoading } from "../reduxMovie/spinnerSlice";
 
 export default function SearchPage() {
   const { t, i18n } = useTranslation();
@@ -16,7 +18,7 @@ export default function SearchPage() {
   let [selectedScheduleId, setSelectedScheduleId] = useState(null); 
   // Save day 
   let [selectedMovieDay, setSelectedMovieDay] = useState(null); 
-
+  const dispatch = useDispatch();
   // AOS animation
   useEffect(() => {
     AOS.init({
@@ -38,7 +40,7 @@ export default function SearchPage() {
         setSearchMovie(result.data.content);
       })
       .catch((err) => {
-        console.log(err);
+        dispatch(turnOffLoading());
       });
   }, []);
 
@@ -51,7 +53,7 @@ export default function SearchPage() {
           setSearchSchedule(result.data.content); // Cập nhật lịch chiếu vào state
         })
         .catch((err) => {
-          console.log(err);
+          dispatch(turnOffLoading());
         });
     }
   }, [selectedMovieId]);

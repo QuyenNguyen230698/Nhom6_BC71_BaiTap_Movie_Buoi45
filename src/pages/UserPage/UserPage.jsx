@@ -5,6 +5,8 @@ import { useTranslation } from "react-i18next";
 import "aos/dist/aos.css";
 import { Form, Button, Input } from "antd";
 import { message } from "antd/es";
+import { useDispatch } from "react-redux";
+import { turnOffLoading } from "../reduxMovie/spinnerSlice";
 
 export default function UserPage() {
   const { t, i18n } = useTranslation();
@@ -12,7 +14,7 @@ export default function UserPage() {
   const [userInfo, setUserInfo] = useState([]);
   const [ticketInfo, setTicketInfo] = useState({});
   const [form] = Form.useForm();
-
+  const dispatch = useDispatch();
   // AOS animation
   useEffect(() => {
     AOS.init({
@@ -36,7 +38,9 @@ export default function UserPage() {
       .then((result) => {
         setUserInfo(result.data.content);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        dispatch(turnOffLoading());
+      });
   }, []);
 
   //#region Ticket Info
@@ -47,7 +51,7 @@ useEffect(() => {
       .then((result) => {
         setTicketInfo(result.data.content);
       }).catch((err) => {
-        console.log('err:', err);
+        dispatch(turnOffLoading());
       });
   }
 }, [foundUser]);
@@ -83,6 +87,7 @@ let renderTicket = () => {
     .then((result) => {
       message.success(t("Update successful"));
     }).catch((err) => {
+      dispatch(turnOffLoading());
       message.error(t("Update failed"));
     })
   }
